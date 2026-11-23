@@ -1,0 +1,2792 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nicha app — แอพพรีเมี่ยมแท้ คุ้มค่า ใช้งานไว</title>
+
+  <!-- Google Fonts: Prompt (Thai/Display), Noto Sans Thai (Body), Plus Jakarta Sans (Numbers/Brand) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Prompt:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Tone.js CDN สำหรับสร้างเสียงเพลง Music Box / Lo-fi น่ารักๆ เล่นได้จริง -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+
+  <!-- Tailwind Design Tokens Configuration (Minimal + Luxury + Bright) -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            display: ['"Plus Jakarta Sans"', '"Prompt"', 'sans-serif'],
+            heading: ['"Prompt"', '"Noto Sans Thai"', 'sans-serif'],
+            sans: ['"Noto Sans Thai"', '"Prompt"', 'sans-serif'],
+          },
+          colors: {
+            pearl: '#FFF9FB',
+            ivory: '#FFFDFB',
+            velvet: '#2A1D33',
+            plum: '#5A4466',
+            champagne: '#D49A6A',
+            blush: '#FFE8F2',
+            rosepop: '#F05D92',
+            rosehover: '#DC467D',
+            lavender: '#F1ECFF',
+            mintsoft: '#E6F9F0',
+            linewarm: '#F5DCE8',
+          },
+          boxShadow: {
+            soft: '0 10px 30px -12px rgba(240, 93, 146, 0.14)',
+            card: '0 8px 22px -8px rgba(240, 93, 146, 0.12)',
+            float: '0 20px 45px -15px rgba(42, 29, 51, 0.18)',
+            rose: '0 10px 26px -8px rgba(240, 93, 146, 0.42)',
+          },
+        },
+      },
+    };
+  </script>
+
+  <!-- Custom Keyframes สำหรับแผ่นเสียงหมุน โน๊ตดนตรีลอยฟุ้ง และซ่อน Scrollbar บนมือถือ -->
+  <style>
+    @keyframes vinylSpin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    @keyframes floatNoteA {
+      0% { opacity: 0; transform: translate(0px, 4px) scale(0.6) rotate(-12deg); }
+      25% { opacity: 1; }
+      100% { opacity: 0; transform: translate(-14px, -30px) scale(1.1) rotate(14deg); }
+    }
+    @keyframes floatNoteB {
+      0% { opacity: 0; transform: translate(0px, 6px) scale(0.55) rotate(10deg); }
+      30% { opacity: 1; }
+      100% { opacity: 0; transform: translate(12px, -34px) scale(1.05) rotate(-16deg); }
+    }
+    @keyframes floatNoteC {
+      0% { opacity: 0; transform: translate(0px, 2px) scale(0.6) rotate(-6deg); }
+      25% { opacity: 0.95; }
+      100% { opacity: 0; transform: translate(2px, -38px) scale(1.15) rotate(10deg); }
+    }
+    .vinyl-spinning {
+      animation: vinylSpin 4.2s linear infinite;
+    }
+    .note-float-1 {
+      animation: floatNoteA 2.2s ease-out infinite;
+    }
+    .note-float-2 {
+      animation: floatNoteB 2.5s ease-out infinite 0.7s;
+    }
+    .note-float-3 {
+      animation: floatNoteC 2.8s ease-out infinite 1.35s;
+    }
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    .cute-dots-bg {
+      background-image: radial-gradient(rgba(240, 93, 146, 0.13) 1.2px, transparent 1.2px);
+      background-size: 22px 22px;
+    }
+    @keyframes gentleFloat {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-6px); }
+    }
+    .animate-gentle-float {
+      animation: gentleFloat 2.4s ease-in-out infinite;
+    }
+    @keyframes dreamyGlow {
+      0%, 100% { transform: scale(0.95); opacity: 0.55; }
+      50% { transform: scale(1.12); opacity: 0.9; }
+    }
+    @keyframes haloBloom {
+      0% { transform: scale(0.92); opacity: 0.65; }
+      70% { transform: scale(1.42); opacity: 0; }
+      100% { transform: scale(1.42); opacity: 0; }
+    }
+    @keyframes dreamyParticleUp {
+      0% { opacity: 0; transform: translateY(14px) translateX(0px) scale(0.65); }
+      25% { opacity: 0.85; }
+      75% { opacity: 0.55; }
+      100% { opacity: 0; transform: translateY(-48px) translateX(10px) scale(1.1); }
+    }
+    @keyframes dreamyParticleSway {
+      0% { opacity: 0; transform: translateY(10px) translateX(0px) scale(0.7); }
+      30% { opacity: 0.8; }
+      70% { opacity: 0.5; }
+      100% { opacity: 0; transform: translateY(-42px) translateX(-12px) scale(1.05); }
+    }
+    .animate-dreamy-glow {
+      animation: dreamyGlow 3.2s ease-in-out infinite;
+    }
+    .animate-halo-bloom {
+      animation: haloBloom 2.6s ease-out infinite;
+    }
+    .animate-halo-bloom-delay {
+      animation: haloBloom 2.6s ease-out infinite 1.3s;
+    }
+    .dreamy-float-a {
+      animation: dreamyParticleUp 3.6s ease-in-out infinite;
+    }
+    .dreamy-float-b {
+      animation: dreamyParticleSway 4.1s ease-in-out infinite 0.8s;
+    }
+    .dreamy-float-c {
+      animation: dreamyParticleUp 4.5s ease-in-out infinite 1.5s;
+    }
+    .dreamy-float-d {
+      animation: dreamyParticleSway 3.9s ease-in-out infinite 2.1s;
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-pearl cute-dots-bg text-velvet font-sans antialiased selection:bg-blush selection:text-rosepop overflow-x-hidden pb-8">
+
+  <!-- ========================================================= -->
+  <!-- LOADING / SPLASH SCREEN: หน้าดาวน์โหลดแบบไร้กรอบ + ลูกเล่นฟุ้งๆ -->
+  <!-- ========================================================= -->
+  <div
+    id="loading-screen"
+    role="status"
+    aria-live="polite"
+    class="fixed inset-0 z-[70] bg-gradient-to-b from-[#FFF6FA] via-[#FFF9FC] to-[#F7F2FF] flex flex-col items-center justify-center px-6 transition-opacity duration-500 overflow-hidden"
+  >
+    <!-- Soft Dreamy Pastel Mist & Glowing Orbs -->
+    <div class="absolute inset-0 pointer-events-none overflow-hidden">
+      <div class="absolute -top-24 -left-20 w-80 h-80 rounded-full bg-pink-200/75 blur-3xl animate-dreamy-glow"></div>
+      <div class="absolute -bottom-24 -right-20 w-80 h-80 rounded-full bg-purple-200/70 blur-3xl animate-dreamy-glow" style="animation-delay: 1.1s;"></div>
+      <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 rounded-full bg-gradient-to-tr from-pink-200/65 via-blush/80 to-lavender/80 blur-3xl animate-dreamy-glow" style="animation-delay: 0.5s;"></div>
+      <div class="absolute top-1/4 right-1/5 w-40 h-40 rounded-full bg-amber-100/65 blur-2xl animate-dreamy-glow" style="animation-delay: 1.7s;"></div>
+
+      <!-- Dreamy Floating Bokeh & Sparkles -->
+      <span class="dreamy-float-a absolute top-[32%] left-[20%] w-3 h-3 rounded-full bg-pink-300/70 blur-[1.5px]"></span>
+      <span class="dreamy-float-b absolute top-[38%] right-[18%] w-4 h-4 rounded-full bg-purple-300/60 blur-[2px]"></span>
+      <span class="dreamy-float-c absolute bottom-[30%] left-[26%] w-2.5 h-2.5 rounded-full bg-amber-200/80 blur-[1px]"></span>
+      <span class="dreamy-float-d absolute bottom-[34%] right-[24%] w-3.5 h-3.5 rounded-full bg-pink-200/85 blur-[1.5px]"></span>
+
+      <span class="dreamy-float-b absolute top-[28%] left-[32%] text-rosepop/75 text-sm drop-shadow-sm">✦</span>
+      <span class="dreamy-float-a absolute top-[34%] right-[30%] text-purple-400/80 text-xs drop-shadow-sm">✧</span>
+      <span class="dreamy-float-d absolute bottom-[36%] left-[18%] text-pink-400/75 text-xs drop-shadow-sm">♥</span>
+      <span class="dreamy-float-c absolute bottom-[28%] right-[32%] text-amber-400/75 text-sm drop-shadow-sm">✦</span>
+      <span class="dreamy-float-a absolute top-[46%] left-[14%] text-purple-300/80 text-xs drop-shadow-sm">⋆</span>
+      <span class="dreamy-float-b absolute top-[48%] right-[14%] text-rosepop/65 text-xs drop-shadow-sm">♥</span>
+    </div>
+
+    <!-- Frameless Floating Logo & Loading Bar -->
+    <div class="relative z-10 w-full max-w-[260px] flex flex-col items-center text-center">
+      <!-- Floating Logo with Soft Diffused Mist Aura (ไม่มีกรอบการ์ดหรือขอบแข็ง) -->
+      <div class="relative animate-gentle-float flex items-center justify-center">
+        <!-- Expanding Soft Pastel Halo Rings -->
+        <span class="pointer-events-none absolute w-24 h-24 rounded-full bg-pink-200/55 blur-md animate-halo-bloom"></span>
+        <span class="pointer-events-none absolute w-24 h-24 rounded-full bg-purple-200/50 blur-md animate-halo-bloom-delay"></span>
+        <!-- Diffused Glow Behind Logo -->
+        <span class="pointer-events-none absolute w-28 h-28 rounded-full bg-gradient-to-tr from-pink-300/45 via-blush/60 to-lavender/60 blur-xl"></span>
+
+        <img
+          id="loading-logo"
+          src="https://i.postimg.cc/Hx2KbjQ0/4.png"
+          alt="Nicha app Loading"
+          onerror="this.onerror=null;this.src='https://placehold.co/160x160/FCEAF1/E05583?text=Demo+Logo';"
+          class="relative z-10 w-24 h-24 rounded-full object-cover shadow-[0_0_32px_rgba(240,93,146,0.28)]"
+        />
+
+        <!-- Delicate Floating Sparkles Near Logo -->
+        <span class="dreamy-float-a pointer-events-none absolute -top-2 -right-3 text-rosepop/85 text-sm z-20">✦</span>
+        <span class="dreamy-float-b pointer-events-none absolute -bottom-1 -left-3 text-purple-400/85 text-xs z-20">♥</span>
+        <span class="dreamy-float-c pointer-events-none absolute top-1 -left-5 text-pink-300 text-xs z-20">✧</span>
+      </div>
+
+      <h2 id="loading-store-name" class="font-display font-extrabold text-xl text-velvet mt-5 tracking-tight drop-shadow-[0_2px_10px_rgba(240,93,146,0.16)]">
+        Nicha app
+      </h2>
+      <p class="text-xs text-plum/80 mt-1 font-heading">
+        กำลังดาวน์โหลดหน้าร้าน...
+      </p>
+
+      <!-- Soft Glowing Pastel Progress Bar (ลอยละมุนไร้กรอบแข็ง) -->
+      <div class="w-full mt-5 space-y-1.5">
+        <div class="w-full h-2 rounded-full bg-white/75 backdrop-blur-sm shadow-[0_0_14px_rgba(240,93,146,0.18)] overflow-hidden">
+          <div
+            id="loading-bar-fill"
+            class="h-full w-0 rounded-full bg-gradient-to-r from-pink-300 via-rosepop to-purple-300 shadow-[0_0_12px_rgba(240,93,146,0.45)] transition-all duration-150 ease-out"
+          ></div>
+        </div>
+        <div class="flex items-center justify-between text-[11px] font-display font-semibold text-rosepop/90 px-1">
+          <span>Loading...</span>
+          <span id="loading-percent">0%</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Soft Ambient Background Glow (Cute Pastel Luxury Bright Atmosphere) -->
+  <div class="fixed inset-0 -z-10 pointer-events-none overflow-hidden">
+    <div class="absolute -top-24 -left-24 w-80 h-80 sm:w-[28rem] sm:h-[28rem] rounded-full bg-gradient-to-br from-pink-200/80 via-blush/70 to-transparent blur-3xl opacity-90"></div>
+    <div class="absolute top-1/3 -right-24 w-72 h-72 sm:w-[26rem] sm:h-[26rem] rounded-full bg-gradient-to-bl from-lavender via-pink-100/70 to-transparent blur-3xl opacity-85"></div>
+    <div class="absolute -bottom-24 left-1/4 w-80 h-80 rounded-full bg-gradient-to-tr from-amber-100/70 via-blush/60 to-transparent blur-3xl opacity-80"></div>
+  </div>
+
+  <!-- Main Responsive Container -->
+  <div class="max-w-xl sm:max-w-2xl md:max-w-3xl mx-auto px-3.5 sm:px-6 pt-4 sm:pt-7">
+
+    <!-- ========================================================= -->
+    <!-- VIEW 1: หน้าแรก (HOME VIEW - ตรงตามโครงร่างภาพที่ 1)       -->
+    <!-- ========================================================= -->
+    <main id="view-home" class="space-y-4 sm:space-y-5 transition-opacity duration-300">
+
+      <!-- [SKETCH 1 - PART 1] Header Card: โลโก้ (ซ้าย - แตะเพื่อเข้าหลังบ้าน) | ชื่อร้าน & สโลแกน (กลางซ้าย) | แผ่นเสียงเพลง (ขวา) -->
+      <header class="bg-white/95 backdrop-blur-md border-2 border-linewarm rounded-3xl px-4 py-3.5 sm:px-6 sm:py-4 shadow-soft flex items-center justify-between gap-3 relative overflow-visible">
+        <!-- Left & Center-Left: Logo (เข้าหลังบ้าน Demo) + Store Name & Slogan -->
+        <div class="flex items-center gap-3 sm:gap-4 min-w-0">
+          <!-- Circular Logo Button (สีกรอบพาสเทลละมุน + แตะเพื่อเปิดระบบหลังบ้าน Demo) -->
+          <button
+            type="button"
+            onclick="openAdminModal()"
+            aria-label="เปิดระบบหลังบ้าน (Demo)"
+            title="แตะโลโก้เพื่อเปิดระบบหลังบ้าน (Demo)"
+            class="relative shrink-0 rounded-full group active:scale-95 transition-transform duration-200 focus:outline-none"
+          >
+            <div class="w-14 h-14 sm:w-16 sm:h-16 rounded-full p-[3px] bg-gradient-to-tr from-pink-200 via-blush to-lavender ring-2 ring-pink-100/80 shadow-sm group-hover:ring-pink-200 transition-all">
+              <div class="w-full h-full rounded-full p-[1.5px] bg-white">
+                <img
+                  id="header-logo"
+                  src="https://i.postimg.cc/Hx2KbjQ0/4.png"
+                  alt="Nicha app Logo"
+                  onerror="this.onerror=null;this.src='https://placehold.co/160x160/FCEAF1/E05583?text=Demo+Logo';"
+                  class="w-full h-full rounded-full object-cover bg-white"
+                />
+              </div>
+            </div>
+            <!-- Online status dot -->
+            <span class="absolute bottom-0.5 right-0.5 w-3.5 h-3.5 rounded-full bg-emerald-300 border-2 border-white shadow-sm" title="พร้อมให้บริการ"></span>
+          </button>
+
+          <!-- Store Name & Slogan -->
+          <div class="min-w-0">
+            <div class="flex items-center gap-2 flex-wrap">
+              <h1 id="header-store-name" class="font-display font-extrabold text-lg sm:text-xl text-velvet tracking-tight truncate">
+                Nicha app
+              </h1>
+              <span class="px-2.5 py-0.5 rounded-full bg-blush text-rosepop border border-pink-200/70 text-[10px] sm:text-[11px] font-display font-semibold shrink-0">
+                Premium Store
+              </span>
+            </div>
+            <p id="header-store-slogan" class="text-[11px] sm:text-xs text-plum/80 truncate mt-0.5">
+              แอพพรีเมี่ยมแท้ คุ้มค่า ใช้งานไว ดูแลตลอดอายุการใช้งาน
+            </p>
+          </div>
+        </div>
+
+        <!-- Right: Cute Pastel CD/Vinyl Music Player with Store Logo & Floating Musical Notes -->
+        <div class="relative shrink-0 flex items-center justify-center">
+          <!-- Floating Cute Musical Notes (แสดงและลอยฟุ้งเมื่อเพลงเล่น) -->
+          <div id="music-notes-layer" class="hidden pointer-events-none absolute -top-2 inset-x-0 flex justify-center overflow-visible z-10">
+            <span class="note-float-1 absolute -left-1 text-rosepop text-sm font-bold drop-shadow-sm">♪</span>
+            <span class="note-float-2 absolute right-0 text-purple-400 text-xs font-bold drop-shadow-sm">♫</span>
+            <span class="note-float-3 absolute left-3 text-amber-400 text-sm font-bold drop-shadow-sm">♬</span>
+          </div>
+
+          <button
+            type="button"
+            id="vinyl-player-btn"
+            onclick="toggleVinylMusic(event)"
+            aria-label="เล่นหรือหยุดเพลงจากแผ่นเสียง"
+            title="แตะเพื่อเล่น/หยุดเพลง"
+            class="relative w-14 h-14 sm:w-16 sm:h-16 rounded-full flex items-center justify-center active:scale-95 transition-transform duration-200 group"
+          >
+            <!-- Cute Pastel Picture CD / Vinyl Disc (อิงสไตล์แผ่นซีดีพาสเทล + ใส่รูปโลโก้ร้าน) -->
+            <div
+              id="vinyl-disc"
+              class="w-14 h-14 sm:w-16 sm:h-16 rounded-full p-[3px] bg-gradient-to-tr from-pink-200 via-blush to-lavender border-2 border-white shadow-card flex items-center justify-center relative"
+            >
+              <!-- Inner White Border Ring -->
+              <div class="w-full h-full rounded-full p-[2px] bg-white relative flex items-center justify-center overflow-hidden">
+                <!-- Store Logo as Disc Artwork -->
+                <img
+                  id="vinyl-logo-img"
+                  src="https://i.postimg.cc/Hx2KbjQ0/4.png"
+                  alt="แผ่นเสียงเพลง Nicha app"
+                  onerror="this.onerror=null;this.src='https://placehold.co/160x160/FCEAF1/E05583?text=Demo';"
+                  class="w-full h-full rounded-full object-cover"
+                />
+                <!-- Soft Pastel Gloss Overlay -->
+                <span class="absolute inset-0 rounded-full bg-gradient-to-tr from-pink-200/15 via-white/25 to-transparent pointer-events-none"></span>
+                <!-- Center CD Hole Ring -->
+                <span class="absolute w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-pink-200/95 p-[3px] shadow-sm flex items-center justify-center">
+                  <span class="w-full h-full rounded-full bg-white shadow-inner"></span>
+                </span>
+              </div>
+            </div>
+
+            <!-- Cute Overlapping Circular Note Badge (มุมขวาล่างแบบแผ่นซีดีน่ารัก) -->
+            <span
+              id="vinyl-status-dot"
+              class="absolute -bottom-0.5 -right-0.5 w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-blush border-2 border-white shadow-sm flex items-center justify-center text-rosepop transition-colors duration-200"
+            >
+              <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M12 3v10.55A4 4 0 1 0 14 17V7h4V3h-6z" />
+              </svg>
+            </span>
+          </button>
+        </div>
+      </header>
+
+      <!-- [SKETCH 1 - PART 2] Hero Banner: แบนเนอร์หลักหน้าแรก (ขนาดพอดีกรอบตามแบบเดิม ไม่มีตัวหนังสือทับ) -->
+      <section class="relative rounded-3xl overflow-hidden bg-white border-2 border-linewarm shadow-soft group">
+        <div class="relative w-full h-44 sm:h-56 md:h-60 bg-blush/40 overflow-hidden">
+          <img
+            id="home-banner-img"
+            src="https://i.postimg.cc/pTZ2fZCy/IMG-9386.jpg"
+            alt="แบนเนอร์โปรโมชั่น Nicha app"
+            onerror="this.onerror=null;this.src='https://placehold.co/1200x580/FFE8F2/F05D92?text=Demo+Banner';"
+            class="w-full h-full block object-cover object-center transition-transform duration-500 group-hover:scale-[1.02]"
+          />
+        </div>
+      </section>
+
+      <!-- [SKETCH 1 - PART 3] 3 Action Buttons Row: รายการสินค้า | กลุ่มตัวแทน | แจ้งปัญหา -->
+      <nav aria-label="เมนูหลัก" class="grid grid-cols-3 gap-2.5 sm:gap-4">
+        <!-- Button 1: รายการสินค้า (ไปหน้าแบบร่างที่ 2 - ปกติเป็นสีขาวสะอาดตา จะเน้นชมพูเฉพาะตอนแตะ/โฮเวอร์) -->
+        <button
+          type="button"
+          onclick="switchView('catalog')"
+          class="group bg-white/95 hover:bg-blush/60 border-2 border-linewarm hover:border-pink-200 active:bg-rosepop active:text-white active:border-rosepop text-velvet rounded-3xl p-3.5 sm:p-4 shadow-card transition-all duration-200 active:scale-[0.97] flex flex-col items-center justify-center gap-1.5 sm:gap-2 text-center"
+        >
+          <span class="w-10 h-10 sm:w-11 sm:h-11 rounded-2xl bg-gradient-to-br from-blush to-pink-100/80 text-rosepop group-active:bg-white/25 group-active:text-white border border-pink-200/70 flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
+            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z" />
+            </svg>
+          </span>
+          <span class="font-heading font-semibold text-xs sm:text-sm tracking-wide">รายการสินค้า</span>
+        </button>
+
+        <!-- Button 2: กลุ่มตัวแทน -->
+        <button
+          type="button"
+          onclick="openModal('modal-agent')"
+          class="group bg-white/95 hover:bg-amber-50/60 border-2 border-linewarm hover:border-amber-200 text-velvet rounded-3xl p-3.5 sm:p-4 shadow-card transition-all duration-200 active:scale-[0.97] flex flex-col items-center justify-center gap-1.5 sm:gap-2 text-center"
+        >
+          <span class="w-10 h-10 sm:w-11 sm:h-11 rounded-2xl bg-gradient-to-br from-amber-50 to-orange-100/70 text-champagne border border-amber-200/70 flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
+            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z" />
+            </svg>
+          </span>
+          <span class="font-heading font-semibold text-xs sm:text-sm text-velvet">กลุ่มตัวแทน</span>
+        </button>
+
+        <!-- Button 3: แจ้งปัญหา -->
+        <button
+          type="button"
+          onclick="openModal('modal-report')"
+          class="group bg-white/95 hover:bg-blush/50 border-2 border-linewarm hover:border-pink-200 text-velvet rounded-3xl p-3.5 sm:p-4 shadow-card transition-all duration-200 active:scale-[0.97] flex flex-col items-center justify-center gap-1.5 sm:gap-2 text-center"
+        >
+          <span class="w-10 h-10 sm:w-11 sm:h-11 rounded-2xl bg-gradient-to-br from-blush to-lavender text-rosepop border border-pink-200/70 flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
+            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M8.625 9.75a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375m-13.5 3.01c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.184-4.183a1.14 1.14 0 01.778-.332 48.294 48.294 0 005.83-.498c1.585-.233 2.708-1.626 2.708-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" />
+            </svg>
+          </span>
+          <span class="font-heading font-semibold text-xs sm:text-sm text-velvet">แจ้งปัญหา</span>
+        </button>
+      </nav>
+
+      <!-- [SKETCH 1 - PART 4] Latest Orders / Activity Container: รายการล่าสุด -->
+      <section class="bg-white/95 backdrop-blur-md border-2 border-linewarm rounded-3xl p-4 sm:p-6 shadow-soft min-h-[340px]">
+        <div class="flex items-center justify-between gap-2 pb-3.5 border-b border-linewarm/80">
+          <div class="flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-rosepop animate-pulse"></span>
+            <h2 class="font-heading font-semibold text-base sm:text-lg text-velvet">
+              รายการล่าสุด <span class="text-rosepop text-sm">♥</span>
+            </h2>
+          </div>
+          <span class="text-[11px] sm:text-xs text-rosepop bg-blush/80 px-3 py-1 rounded-full border border-pink-200/70 font-medium">
+            อัปเดตอัตโนมัติ (Demo)
+          </span>
+        </div>
+
+        <!-- Dynamic Recent Orders List -->
+        <div id="latest-orders-list" class="divide-y divide-linewarm/70 mt-2">
+          <!-- Rendered by JavaScript -->
+        </div>
+
+        <!-- Subtle CTA to Catalog inside empty/bottom area -->
+        <div class="mt-5 pt-4 border-t border-linewarm/70 flex flex-col sm:flex-row items-center justify-between gap-3">
+          <p class="text-xs text-plum/80 text-center sm:text-left">
+            ✦ ต้องการสั่งซื้อแอพพรีเมี่ยมหรือดูแพ็กเกจทั้งหมด?
+          </p>
+          <button
+            type="button"
+            onclick="switchView('catalog')"
+            class="w-full sm:w-auto px-5 py-2.5 rounded-full bg-gradient-to-r from-blush to-lavender hover:from-rosepop hover:to-rosehover text-rosepop hover:text-white text-xs font-heading font-semibold transition-all duration-200 border border-pink-200/80 shadow-sm active:scale-95"
+          >
+            ดูรายการสินค้าทั้งหมด →
+          </button>
+        </div>
+      </section>
+    </main>
+
+    <!-- ========================================================= -->
+    <!-- VIEW 2: หน้ารายการสินค้า (CATALOG VIEW - ตรงตามโครงร่างภาพที่ 2) -->
+    <!-- ========================================================= -->
+    <main id="view-catalog" class="hidden space-y-4 sm:space-y-5 transition-opacity duration-300">
+
+      <!-- [SKETCH 2 - PART 1] Catalog Banner: แบนเนอร์หน้ารายการสินค้า (อยู่ด้านบนสุด) -->
+      <section class="relative rounded-3xl overflow-hidden bg-white border-2 border-linewarm shadow-soft">
+        <div class="relative w-full h-32 sm:h-40 md:h-44 bg-lavender/50 overflow-hidden">
+          <img
+            id="catalog-banner-img"
+            src="https://i.postimg.cc/VsKf5K5b/IMG-9391.jpg"
+            alt="แบนเนอร์หมวดหมู่สินค้า"
+            onerror="this.onerror=null;this.src='https://placehold.co/1200x450/F1ECFF/5A4466?text=Demo+Catalog+Banner';"
+            class="w-full h-full block object-cover object-center"
+          />
+        </div>
+      </section>
+
+      <!-- Action Row Under Banner: ปุ่มย้อนกลับ & ปุ่มตะกร้าสินค้าน่ารัก (ย้ายมาอยู่ใต้แบนเนอร์ ไม่มีปุ่มหลังบ้าน) -->
+      <div class="flex items-center justify-between gap-2.5">
+        <button
+          type="button"
+          onclick="switchView('home')"
+          class="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-full bg-white/95 hover:bg-blush/70 border-2 border-linewarm text-xs sm:text-sm font-heading font-medium text-velvet hover:text-rosepop shadow-sm transition-all active:scale-95"
+        >
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+          </svg>
+          <span>กลับหน้าแรก</span>
+        </button>
+
+        <!-- Cute Pastel Shopping Bag / Cart Trigger -->
+        <button
+          type="button"
+          onclick="openCartModal()"
+          aria-label="เปิดตะกร้าสินค้า"
+          class="relative inline-flex items-center gap-2 pl-2.5 pr-3.5 py-2 rounded-full bg-white/95 hover:bg-blush/80 border-2 border-pink-200/90 text-rosepop shadow-card transition-all active:scale-95 group"
+        >
+          <span class="w-7 h-7 rounded-full bg-gradient-to-br from-blush to-pink-100 flex items-center justify-center group-hover:scale-105 transition-transform">
+            <!-- Cute Rounded Shopping Bag with Heart SVG -->
+            <svg class="w-4 h-4 text-rosepop" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M8.5 8.5V7a3.5 3.5 0 0 1 7 0v1.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+              <path d="M5.6 9.6A2.2 2.2 0 0 1 7.78 7.75h8.44a2.2 2.2 0 0 1 2.18 1.85l.96 6.75A3.4 3.4 0 0 1 16 20.25H8a3.4 3.4 0 0 1-3.36-3.9l.96-6.75Z" fill="#FFE8F2" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" />
+              <path d="M12 16.35c-.22 0-.44-.08-.61-.24l-1.54-1.44a1.65 1.65 0 0 1 2.15-2.5c.72-.52 1.75-.46 2.34.18.56.62.53 1.61-.08 2.19l-1.65 1.57c-.17.16-.39.24-.61.24Z" fill="currentColor" />
+            </svg>
+          </span>
+          <span class="font-heading font-semibold text-xs sm:text-sm text-velvet group-hover:text-rosepop transition-colors">ตะกร้า</span>
+          <span id="catalog-cart-badge" class="hidden min-w-[20px] h-[20px] px-1.5 rounded-full bg-rosepop text-white text-[10px] font-display font-bold flex items-center justify-center shadow-sm">
+            0
+          </span>
+        </button>
+      </div>
+
+      <!-- [SKETCH 2 - PART 2] Category Filter Bar: หมวดหมู่ -->
+      <section class="bg-white/95 backdrop-blur-md border-2 border-linewarm rounded-2xl p-2 sm:p-2.5 shadow-card">
+        <div class="flex items-center gap-2 overflow-x-auto pb-0.5 no-scrollbar" id="category-tabs">
+          <!-- Category pills rendered by JavaScript -->
+        </div>
+      </section>
+
+      <!-- [SKETCH 2 - PART 3] Product Grid: การ์ดสินค้าแบบ 3 คอลัมน์ (ตรงตามแบบร่าง 3x3) -->
+      <section aria-label="รายการการ์ดสินค้า">
+        <div id="product-grid" class="grid grid-cols-3 gap-2.5 sm:gap-4 md:gap-5">
+          <!-- Product cards rendered by JavaScript -->
+        </div>
+
+        <!-- Empty Filter State -->
+        <div id="product-empty" class="hidden bg-white/90 border border-linewarm rounded-3xl p-10 text-center shadow-soft">
+          <p class="font-heading font-medium text-velvet">ไม่พบสินค้าในหมวดหมู่นี้</p>
+          <p class="text-xs text-plum/70 mt-1">ลองเลือกหมวดหมู่อื่น หรือเพิ่มสินค้าใหม่ได้ในระบบหลังบ้าน (Demo)</p>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- ========================================================= -->
+  <!-- MODAL 1: รายละเอียดสินค้า & เลือกแพ็กเกจสั่งซื้อ (PRODUCT DETAIL) -->
+  <!-- ========================================================= -->
+  <div id="modal-product" class="hidden fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-velvet/45 backdrop-blur-sm p-0 sm:p-4">
+    <div class="bg-white w-full sm:max-w-md rounded-t-3xl sm:rounded-3xl border-2 border-linewarm shadow-float overflow-hidden max-h-[92vh] flex flex-col">
+      <!-- Product Cover Image -->
+      <div class="relative h-44 sm:h-52 bg-blush/50 shrink-0 overflow-hidden">
+        <img
+          id="detail-img"
+          src=""
+          alt="รูปภาพสินค้า"
+          onerror="this.onerror=null;this.src='https://placehold.co/400x400/FFE8F2/F05D92?text=Demo';"
+          class="w-full h-full object-cover"
+        />
+        <button
+          type="button"
+          onclick="closeModal('modal-product')"
+          aria-label="ปิดหน้ารายละเอียดสินค้า"
+          class="absolute top-3 right-3 w-9 h-9 rounded-full bg-white/90 hover:bg-blush text-velvet shadow-sm flex items-center justify-center transition"
+        >
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+        <span
+          id="detail-badge"
+          class="absolute bottom-3 left-4 px-3 py-1 rounded-full bg-white/95 text-rosepop border border-pink-200/80 text-[11px] font-heading font-semibold shadow-sm"
+        >
+          พร้อมส่ง
+        </span>
+      </div>
+
+      <!-- Product Details & Multi-Package Selector -->
+      <div class="p-5 sm:p-6 overflow-y-auto space-y-4">
+        <div class="flex items-start justify-between gap-3">
+          <div class="min-w-0">
+            <p id="detail-category" class="text-[11px] font-heading font-medium text-champagne"></p>
+            <h3 id="detail-name" class="font-display font-extrabold text-lg sm:text-xl text-velvet leading-tight mt-0.5"></h3>
+            <p id="detail-duration" class="text-xs text-plum/75 mt-0.5"></p>
+          </div>
+          <div class="text-right shrink-0">
+            <p id="detail-price" class="font-display font-extrabold text-xl sm:text-2xl text-rosepop"></p>
+            <p class="text-[10px] text-plum/65">ราคาแพ็กเกจที่เลือก</p>
+          </div>
+        </div>
+
+        <div id="detail-desc" class="rounded-2xl bg-pearl/90 border border-linewarm p-3.5 text-xs text-plum leading-relaxed"></div>
+
+        <!-- Package Selector List -->
+        <div class="space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-heading font-semibold text-velvet">✦ เลือกแพ็กเกจราคา</span>
+            <span class="text-[11px] text-plum/65">แตะเพื่อเลือก</span>
+          </div>
+          <div id="detail-packages" class="space-y-2">
+            <!-- Rendered by JavaScript -->
+          </div>
+        </div>
+
+        <!-- Quantity Row -->
+        <div class="flex items-center justify-between pt-1">
+          <span class="text-xs sm:text-sm font-heading font-semibold text-velvet">จำนวนที่ต้องการ</span>
+          <div class="inline-flex items-center gap-3 px-2 py-1 rounded-full bg-pearl border border-linewarm">
+            <button
+              type="button"
+              onclick="adjustDetailQty(-1)"
+              aria-label="ลดจำนวน"
+              class="w-7 h-7 rounded-full bg-white hover:bg-blush text-velvet font-bold text-sm shadow-sm flex items-center justify-center transition"
+            >
+              −
+            </button>
+            <span id="detail-qty" class="font-display font-bold text-sm text-velvet w-5 text-center">1</span>
+            <button
+              type="button"
+              onclick="adjustDetailQty(1)"
+              aria-label="เพิ่มจำนวน"
+              class="w-7 h-7 rounded-full bg-white hover:bg-blush text-velvet font-bold text-sm shadow-sm flex items-center justify-center transition"
+            >
+              +
+            </button>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="grid grid-cols-2 gap-2.5 pt-1">
+          <button
+            type="button"
+            id="btn-add-cart"
+            onclick="addCurrentProductToCart(false)"
+            class="py-3 rounded-2xl bg-white hover:bg-blush/70 border-2 border-linewarm text-velvet hover:text-rosepop font-heading font-semibold text-xs sm:text-sm transition active:scale-[0.98]"
+          >
+            เพิ่มลงตะกร้า
+          </button>
+          <button
+            type="button"
+            id="btn-buy-now"
+            onclick="addCurrentProductToCart(true)"
+            class="py-3 rounded-2xl bg-gradient-to-r from-rosepop to-rosehover text-white font-heading font-semibold text-xs sm:text-sm shadow-rose hover:opacity-95 transition active:scale-[0.98]"
+          >
+            สั่งซื้อทันที
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================= -->
+  <!-- MODAL 2A: ตะกร้าสินค้า & ชำระเงิน (CART MODAL แยกอิสระ)       -->
+  <!-- ========================================================= -->
+  <div id="modal-cart" class="hidden fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-velvet/45 backdrop-blur-sm p-0 sm:p-4">
+    <div class="bg-white w-full sm:max-w-lg rounded-t-3xl sm:rounded-3xl border-2 border-linewarm shadow-float overflow-hidden max-h-[92vh] flex flex-col">
+      <!-- Cart Top Bar -->
+      <div class="px-5 pt-4 pb-3 border-b border-linewarm bg-ivory flex items-center justify-between gap-3 shrink-0">
+        <div class="flex items-center gap-2.5">
+          <span class="w-9 h-9 rounded-2xl bg-blush border border-pink-200/80 text-rosepop flex items-center justify-center">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M8.5 8.5V7a3.5 3.5 0 0 1 7 0v1.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+              <path d="M5.6 9.6A2.2 2.2 0 0 1 7.78 7.75h8.44a2.2 2.2 0 0 1 2.18 1.85l.96 6.75A3.4 3.4 0 0 1 16 20.25H8a3.4 3.4 0 0 1-3.36-3.9l.96-6.75Z" fill="#FFE8F2" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" />
+              <path d="M12 16.35c-.22 0-.44-.08-.61-.24l-1.54-1.44a1.65 1.65 0 0 1 2.15-2.5c.72-.52 1.75-.46 2.34.18.56.62.53 1.61-.08 2.19l-1.65 1.57c-.17.16-.39.24-.61.24Z" fill="currentColor" />
+            </svg>
+          </span>
+          <div>
+            <h3 class="font-heading font-semibold text-base text-velvet">ตะกร้าสินค้า</h3>
+            <p class="text-[11px] text-plum/70">ตรวจสอบรายการและกรอกไอดีไลน์เพื่อสั่งซื้อ</p>
+          </div>
+        </div>
+        <button
+          type="button"
+          onclick="closeModal('modal-cart')"
+          aria-label="ปิดหน้าต่างตะกร้า"
+          class="w-9 h-9 rounded-full bg-pearl hover:bg-blush text-velvet flex items-center justify-center transition"
+        >
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+      <!-- Cart Content -->
+      <div class="p-5 sm:p-6 overflow-y-auto space-y-5">
+        <div id="cart-items-container" class="space-y-3">
+          <!-- Rendered by JavaScript -->
+        </div>
+
+        <!-- Checkout Form (Shown when cart has items) -->
+        <form id="checkout-form" onsubmit="handleCheckout(event)" class="hidden space-y-4 pt-4 border-t border-linewarm">
+          <div class="flex items-center justify-between bg-pearl rounded-2xl px-4 py-3 border border-linewarm">
+            <span class="font-heading font-medium text-sm text-plum">ยอดรวมทั้งหมด</span>
+            <span id="cart-total-price" class="font-display font-extrabold text-xl text-rosepop">฿0</span>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label class="block text-xs font-heading font-medium text-velvet mb-1">ชื่อผู้สั่งซื้อ *</label>
+              <input
+                type="text"
+                id="checkout-name"
+                required
+                placeholder="เช่น คุณนิชา"
+                class="w-full px-3.5 py-2.5 rounded-xl bg-pearl border border-linewarm text-sm focus:outline-none focus:border-rosepop focus:bg-white transition"
+              />
+            </div>
+            <div>
+              <label class="block text-xs font-heading font-medium text-velvet mb-1">ไอดีไลน์ (LINE ID) *</label>
+              <input
+                type="text"
+                id="checkout-contact"
+                required
+                placeholder="เช่น @nicha_line หรือไอดีไลน์ของคุณ"
+                class="w-full px-3.5 py-2.5 rounded-xl bg-pearl border border-linewarm text-sm focus:outline-none focus:border-rosepop focus:bg-white transition"
+              />
+            </div>
+          </div>
+
+          <!-- Demo Payment Notice Box -->
+          <div class="rounded-2xl border border-dashed border-champagne/70 bg-amber-50/60 p-4 flex flex-col sm:flex-row items-center gap-4">
+            <img
+              src="https://placehold.co/180x180/FFFFFF/4A3B52?text=Demo+QR"
+              alt="Demo QR PromptPay"
+              class="w-24 h-24 rounded-xl border border-linewarm shrink-0 bg-white object-cover"
+            />
+            <div class="text-center sm:text-left space-y-1">
+              <span class="inline-block px-2 py-0.5 rounded-full text-[10px] font-semibold bg-amber-100 text-amber-800">
+                DEMO PAYMENT
+              </span>
+              <p class="text-xs font-heading font-semibold text-velvet">จำลองการชำระเงินพร้อมเพย์ (ยังไม่ใช่การโอนจริง)</p>
+              <p class="text-[11px] text-plum/80">กดปุ่มยืนยันด้านล่างเพื่อทดสอบระบบสั่งซื้อ คำสั่งซื้อจำลองจะไปแสดงใน "รายการล่าสุด" หน้าแรกทันที</p>
+            </div>
+          </div>
+
+          <button
+            type="submit"
+            class="w-full py-3.5 rounded-2xl bg-gradient-to-r from-rosepop to-rosehover text-white font-heading font-semibold text-sm shadow-rose hover:opacity-95 transition active:scale-[0.99]"
+          >
+            ยืนยันคำสั่งซื้อ (โหมด Demo)
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================= -->
+  <!-- MODAL 2B: ระบบหลังบ้าน Demo (ADMIN MODAL แยกอิสระ เข้าผ่านโลโก้) -->
+  <!-- ========================================================= -->
+  <div id="modal-admin" class="hidden fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-velvet/45 backdrop-blur-sm p-0 sm:p-4">
+    <div class="bg-white w-full sm:max-w-2xl rounded-t-3xl sm:rounded-3xl border border-linewarm shadow-float overflow-hidden max-h-[92vh] flex flex-col">
+      <!-- Admin Top Bar -->
+      <div class="px-5 pt-4 pb-3 border-b border-linewarm bg-ivory flex items-center justify-between gap-3 shrink-0">
+        <div class="flex items-center gap-2.5">
+          <span class="w-9 h-9 rounded-2xl bg-lavender border border-purple-200/70 text-plum flex items-center justify-center">
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 11-3 0m3 0a1.5 1.5 0 10-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-9.75 0h9.75" />
+            </svg>
+          </span>
+          <div>
+            <h3 class="font-heading font-semibold text-base text-velvet">ระบบหลังบ้าน (Demo)</h3>
+            <p class="text-[11px] text-plum/70">จัดการรูปภาพ สินค้า และรายการคำสั่งซื้อ</p>
+          </div>
+        </div>
+        <button
+          type="button"
+          onclick="closeModal('modal-admin')"
+          aria-label="ปิดหน้าต่างระบบหลังบ้าน"
+          class="w-9 h-9 rounded-full bg-pearl hover:bg-blush text-velvet flex items-center justify-center transition"
+        >
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+      <!-- Admin Content -->
+      <div id="hub-panel-admin" class="p-5 sm:p-6 overflow-y-auto space-y-5">
+        <!-- Honest Demo Security Disclaimer -->
+        <div class="rounded-2xl bg-amber-50 border border-amber-200/80 px-4 py-3 text-xs text-amber-900 flex items-start gap-2.5">
+          <svg class="w-4 h-4 shrink-0 mt-0.5 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+          </svg>
+          <div>
+            <p class="font-heading font-semibold">ระบบหลังบ้านแบบจำลอง (Demo Only)</p>
+            <p class="text-[11px] text-amber-800/90 mt-0.5">การแก้ไขรูปภาพและสินค้าจะแสดงผลเฉพาะในเบราว์เซอร์นี้ ยังไม่มีการเชื่อมต่อฐานข้อมูลจริงหรือระบบล็อกอินความปลอดภัย</p>
+          </div>
+        </div>
+
+        <!-- Admin Sub-navigation -->
+        <div class="flex items-center gap-2 overflow-x-auto pb-1">
+          <button type="button" id="admin-sub-images" onclick="switchAdminSubTab('images')" class="px-3.5 py-2 rounded-xl text-xs font-heading font-medium whitespace-nowrap transition">
+            จัดการรูป & ข้อมูลร้าน
+          </button>
+          <button type="button" id="admin-sub-products" onclick="switchAdminSubTab('products')" class="px-3.5 py-2 rounded-xl text-xs font-heading font-medium whitespace-nowrap transition">
+            จัดการสินค้า (<span id="admin-product-count">9</span>)
+          </button>
+          <button type="button" id="admin-sub-orders" onclick="switchAdminSubTab('orders')" class="px-3.5 py-2 rounded-xl text-xs font-heading font-medium whitespace-nowrap transition">
+            ออเดอร์ & แจ้งปัญหา
+          </button>
+        </div>
+
+        <!-- ADMIN SUB-TAB 1: จัดการรูปภาพ โลโก้ แบนเนอร์ และข้อมูลร้าน -->
+        <form id="admin-panel-images" onsubmit="saveStoreBranding(event)" class="space-y-4">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label class="block text-xs font-heading font-medium text-velvet mb-1">ชื่อร้าน</label>
+              <input type="text" id="admin-store-name" required class="w-full px-3.5 py-2 rounded-xl bg-pearl border border-linewarm text-sm focus:outline-none focus:border-rosepop" />
+            </div>
+            <div>
+              <label class="block text-xs font-heading font-medium text-velvet mb-1">สโลแกนร้าน</label>
+              <input type="text" id="admin-store-slogan" required class="w-full px-3.5 py-2 rounded-xl bg-pearl border border-linewarm text-sm focus:outline-none focus:border-rosepop" />
+            </div>
+          </div>
+
+          <!-- Logo Manager -->
+          <div class="p-3.5 rounded-2xl bg-pearl/70 border border-linewarm space-y-2">
+            <label class="block text-xs font-heading font-semibold text-velvet">รูปโลโก้ร้าน (URL หรือเลือกไฟล์ทดลอง)</label>
+            <div class="flex flex-col sm:flex-row gap-2">
+              <input type="url" id="admin-logo-url" placeholder="https://..." class="flex-1 px-3 py-2 rounded-xl bg-white border border-linewarm text-xs focus:outline-none focus:border-rosepop" />
+              <label class="cursor-pointer px-3.5 py-2 rounded-xl bg-white hover:bg-blush border border-linewarm text-xs font-heading font-medium text-velvet text-center transition">
+                เลือกรูปจากเครื่อง
+                <input type="file" accept="image/*" class="hidden" onchange="handleLocalImageUpload(event, 'admin-logo-url')" />
+              </label>
+            </div>
+          </div>
+
+          <!-- Home Banner Manager -->
+          <div class="p-3.5 rounded-2xl bg-pearl/70 border border-linewarm space-y-2.5">
+            <label class="block text-xs font-heading font-semibold text-velvet">แบนเนอร์หน้าแรก (แบบร่างที่ 1)</label>
+            <div class="flex flex-col sm:flex-row gap-2">
+              <input type="url" id="admin-home-banner-url" placeholder="https://..." class="flex-1 px-3 py-2 rounded-xl bg-white border border-linewarm text-xs focus:outline-none focus:border-rosepop" />
+              <label class="cursor-pointer px-3.5 py-2 rounded-xl bg-white hover:bg-blush border border-linewarm text-xs font-heading font-medium text-velvet text-center transition">
+                เลือกรูปจากเครื่อง
+                <input type="file" accept="image/*" class="hidden" onchange="handleLocalImageUpload(event, 'admin-home-banner-url')" />
+              </label>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              <input type="text" id="admin-home-banner-title" placeholder="หัวข้อแบนเนอร์" class="px-3 py-2 rounded-xl bg-white border border-linewarm text-xs focus:outline-none focus:border-rosepop" />
+              <input type="text" id="admin-home-banner-sub" placeholder="คำอธิบายสั้นๆ" class="px-3 py-2 rounded-xl bg-white border border-linewarm text-xs focus:outline-none focus:border-rosepop" />
+            </div>
+          </div>
+
+          <!-- Catalog Banner Manager -->
+          <div class="p-3.5 rounded-2xl bg-pearl/70 border border-linewarm space-y-2.5">
+            <label class="block text-xs font-heading font-semibold text-velvet">แบนเนอร์หน้ารายการสินค้า (แบบร่างที่ 2)</label>
+            <div class="flex flex-col sm:flex-row gap-2">
+              <input type="url" id="admin-catalog-banner-url" placeholder="https://..." class="flex-1 px-3 py-2 rounded-xl bg-white border border-linewarm text-xs focus:outline-none focus:border-rosepop" />
+              <label class="cursor-pointer px-3.5 py-2 rounded-xl bg-white hover:bg-blush border border-linewarm text-xs font-heading font-medium text-velvet text-center transition">
+                เลือกรูปจากเครื่อง
+                <input type="file" accept="image/*" class="hidden" onchange="handleLocalImageUpload(event, 'admin-catalog-banner-url')" />
+              </label>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              <input type="text" id="admin-catalog-banner-title" placeholder="หัวข้อแบนเนอร์สินค้า" class="px-3 py-2 rounded-xl bg-white border border-linewarm text-xs focus:outline-none focus:border-rosepop" />
+              <input type="text" id="admin-catalog-banner-sub" placeholder="คำอธิบายสั้นๆ" class="px-3 py-2 rounded-xl bg-white border border-linewarm text-xs focus:outline-none focus:border-rosepop" />
+            </div>
+          </div>
+
+          <div class="flex flex-wrap items-center justify-between gap-2 pt-1">
+            <button type="button" onclick="resetDemoData()" class="px-4 py-2.5 rounded-xl bg-pearl hover:bg-rose-50 text-plum hover:text-rosepop border border-linewarm text-xs font-heading font-medium transition">
+              รีเซ็ตข้อมูล Demo เดิม
+            </button>
+            <button type="submit" class="px-5 py-2.5 rounded-xl bg-velvet hover:bg-rosepop text-white text-xs sm:text-sm font-heading font-medium shadow-sm transition">
+              บันทึกการเปลี่ยนแปลง
+            </button>
+          </div>
+        </form>
+
+        <!-- ADMIN SUB-TAB 2: จัดการสินค้า (เพิ่ม / แก้ไข / ลบ) -->
+        <div id="admin-panel-products" class="hidden space-y-4">
+          <!-- Add / Edit Product Form -->
+          <form id="admin-product-form" onsubmit="saveProductFromAdmin(event)" class="p-4 rounded-2xl bg-pearl/70 border border-linewarm space-y-3">
+            <div class="flex items-center justify-between">
+              <h4 id="admin-product-form-title" class="font-heading font-semibold text-sm text-velvet">เพิ่มสินค้าใหม่</h4>
+              <button type="button" id="btn-cancel-edit" onclick="resetProductForm()" class="hidden text-xs text-rosepop hover:underline">
+                ยกเลิกการแก้ไข
+              </button>
+            </div>
+
+            <input type="hidden" id="prod-edit-id" value="" />
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+              <input type="text" id="prod-name" required placeholder="ชื่อแอพ เช่น YouTube Premium" class="px-3 py-2 rounded-xl bg-white border border-linewarm text-xs focus:outline-none focus:border-rosepop" />
+              <select id="prod-category" class="px-3 py-2 rounded-xl bg-white border border-linewarm text-xs focus:outline-none focus:border-rosepop">
+                <option value="ดูหนัง & ซีรีส์">ดูหนัง & ซีรีส์</option>
+                <option value="ฟังเพลง">ฟังเพลง</option>
+                <option value="ตัดต่อ & ดีไซน์">ตัดต่อ & ดีไซน์</option>
+                <option value="ทำงาน & AI">ทำงาน & AI</option>
+              </select>
+              <input type="number" id="prod-price" required min="1" placeholder="ราคา (บาท)" class="px-3 py-2 rounded-xl bg-white border border-linewarm text-xs focus:outline-none focus:border-rosepop" />
+              <input type="text" id="prod-duration" required placeholder="ระยะเวลา เช่น 1 เดือน / จอส่วนตัว" class="px-3 py-2 rounded-xl bg-white border border-linewarm text-xs focus:outline-none focus:border-rosepop" />
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+              <select id="prod-status" class="px-3 py-2 rounded-xl bg-white border border-linewarm text-xs focus:outline-none focus:border-rosepop">
+                <option value="พร้อมส่ง">พร้อมส่ง</option>
+                <option value="ขายดี">ขายดี</option>
+                <option value="หมดชั่วคราว">หมดชั่วคราว</option>
+              </select>
+              <div class="sm:col-span-2 flex gap-2">
+                <input type="url" id="prod-image" placeholder="ลิงก์รูปสินค้า (เว้นว่างใช้ Demo)" class="flex-1 px-3 py-2 rounded-xl bg-white border border-linewarm text-xs focus:outline-none focus:border-rosepop" />
+                <label class="cursor-pointer px-3 py-2 rounded-xl bg-white hover:bg-blush border border-linewarm text-xs font-heading text-velvet whitespace-nowrap">
+                  อัปโหลด
+                  <input type="file" accept="image/*" class="hidden" onchange="handleLocalImageUpload(event, 'prod-image')" />
+                </label>
+              </div>
+            </div>
+
+            <textarea id="prod-desc" rows="2" placeholder="รายละเอียดแพ็กเกจและการรับประกัน..." class="w-full px-3 py-2 rounded-xl bg-white border border-linewarm text-xs focus:outline-none focus:border-rosepop"></textarea>
+
+            <button type="submit" id="btn-save-product" class="w-full py-2.5 rounded-xl bg-velvet hover:bg-rosepop text-white text-xs font-heading font-medium transition">
+              + เพิ่มสินค้าลงหน้าร้าน
+            </button>
+          </form>
+
+          <!-- Product List in Admin -->
+          <div id="admin-products-list" class="space-y-2">
+            <!-- Rendered by JavaScript -->
+          </div>
+        </div>
+
+        <!-- ADMIN SUB-TAB 3: รายการสั่งซื้อ & แจ้งปัญหา -->
+        <div id="admin-panel-orders" class="hidden space-y-4">
+          <div>
+            <h4 class="font-heading font-semibold text-xs text-plum uppercase tracking-wider mb-2">คำสั่งซื้อล่าสุด (Demo)</h4>
+            <div id="admin-orders-list" class="space-y-2"></div>
+          </div>
+          <div class="pt-3 border-t border-linewarm">
+            <h4 class="font-heading font-semibold text-xs text-plum uppercase tracking-wider mb-2">รายการแจ้งปัญหา (Demo)</h4>
+            <div id="admin-reports-list" class="space-y-2"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================= -->
+  <!-- MODAL 3: กลุ่มตัวแทน (AGENT / RESELLER GROUP MODAL)        -->
+  <!-- ========================================================= -->
+  <div id="modal-agent" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-velvet/45 backdrop-blur-sm p-4">
+    <div class="bg-white w-full max-w-md rounded-3xl border border-linewarm shadow-float p-6 space-y-4">
+      <div class="flex items-start justify-between gap-3">
+        <div>
+          <span class="inline-block px-2.5 py-0.5 rounded-full text-[11px] font-medium bg-amber-50 text-champagne border border-amber-200/70">
+            Reseller Program • Demo
+          </span>
+          <h3 class="font-heading font-semibold text-lg text-velvet mt-1.5">กลุ่มตัวแทนจำหน่าย Nicha app</h3>
+        </div>
+        <button type="button" onclick="closeModal('modal-agent')" class="w-8 h-8 rounded-full bg-pearl hover:bg-blush flex items-center justify-center text-velvet">✕</button>
+      </div>
+
+      <p class="text-xs sm:text-sm text-plum leading-relaxed">
+        สมัครตัวแทนจำหน่ายแอพพรีเมี่ยม รับเรทราคาส่งพิเศษ สต็อกพร้อมส่งทุกวัน และมีทีมงานดูแลช่วยเคลมสินค้า
+      </p>
+
+      <ul class="space-y-2 text-xs text-velvet bg-pearl rounded-2xl p-4 border border-linewarm">
+        <li class="flex items-center gap-2"><span class="text-rosepop">✦</span> เรทราคาตัวแทนพิเศษ กำไรต่อออเดอร์คุ้มค่า</li>
+        <li class="flex items-center gap-2"><span class="text-rosepop">✦</span> มีรูปภาพโปรโมทและแคปชั่นพร้อมขาย</li>
+        <li class="flex items-center gap-2"><span class="text-rosepop">✦</span> แจ้งอัปเดตสถานะแอพและโปรโมชั่นในกลุ่มตลอดเวลา</li>
+      </ul>
+
+      <div class="flex flex-col gap-2 pt-1">
+        <button
+          type="button"
+          onclick="joinAgentDemo()"
+          class="w-full py-3 rounded-2xl bg-gradient-to-r from-velvet to-plum hover:from-rosepop hover:to-rosehover text-white font-heading font-medium text-sm shadow-card transition"
+        >
+          เข้ากลุ่มตัวแทน (จำลองลิงก์ Demo)
+        </button>
+        <p class="text-[11px] text-center text-plum/65">
+          * เมื่อใช้งานจริงสามารถผูกปุ่มนี้กับ LINE OpenChat หรือ Facebook Group ได้ทันที
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================= -->
+  <!-- MODAL 4: แจ้งปัญหา (REPORT ISSUE MODAL)                     -->
+  <!-- ========================================================= -->
+  <div id="modal-report" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-velvet/45 backdrop-blur-sm p-4">
+    <div class="bg-white w-full max-w-md rounded-3xl border border-linewarm shadow-float p-6 space-y-4">
+      <div class="flex items-start justify-between gap-3">
+        <div>
+          <span class="inline-block px-2.5 py-0.5 rounded-full text-[11px] font-medium bg-blush text-rosepop">
+            Support Center • Demo
+          </span>
+          <h3 class="font-heading font-semibold text-lg text-velvet mt-1.5">แจ้งปัญหาการใช้งาน / เคลมแอพ</h3>
+        </div>
+        <button type="button" onclick="closeModal('modal-report')" class="w-8 h-8 rounded-full bg-pearl hover:bg-blush flex items-center justify-center text-velvet">✕</button>
+      </div>
+
+      <form id="report-form" onsubmit="handleReportSubmit(event)" class="space-y-3">
+        <div>
+          <label class="block text-xs font-heading font-medium text-velvet mb-1">เลขคำสั่งซื้อ หรือ อีเมล/LINE *</label>
+          <input type="text" id="report-ref" required placeholder="เช่น NC-2611-1042 หรือ @line_id" class="w-full px-3.5 py-2.5 rounded-xl bg-pearl border border-linewarm text-sm focus:outline-none focus:border-rosepop focus:bg-white" />
+        </div>
+        <div>
+          <label class="block text-xs font-heading font-medium text-velvet mb-1">หัวข้อปัญหา *</label>
+          <select id="report-topic" class="w-full px-3.5 py-2.5 rounded-xl bg-pearl border border-linewarm text-sm focus:outline-none focus:border-rosepop focus:bg-white">
+            <option value="เข้าใช้งานแอพไม่ได้">เข้าใช้งานแอพไม่ได้ / รหัสผ่านผิด</option>
+            <option value="แอพหลุดพรีเมี่ยมก่อนกำหนด">แอพหลุดพรีเมี่ยมก่อนกำหนด</option>
+            <option value="ยังไม่ได้รับสินค้า">สั่งซื้อแล้ว ยังไม่ได้รับสินค้า</option>
+            <option value="สอบถามอื่นๆ">สอบถามข้อมูลอื่นๆ</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-xs font-heading font-medium text-velvet mb-1">รายละเอียดเพิ่มเติม *</label>
+          <textarea id="report-detail" required rows="3" placeholder="ระบุอาการที่พบเพื่อให้ทีมงานตรวจสอบได้เร็วขึ้น..." class="w-full px-3.5 py-2.5 rounded-xl bg-pearl border border-linewarm text-sm focus:outline-none focus:border-rosepop focus:bg-white"></textarea>
+        </div>
+        <button type="submit" class="w-full py-3 rounded-2xl bg-rosepop hover:bg-rosehover text-white font-heading font-medium text-sm shadow-rose transition">
+          ส่งเรื่องแจ้งปัญหา (Demo)
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========================================================= -->
+  <!-- MODAL 5: ใบเสร็จคำสั่งซื้อสำเร็จ (ORDER RECEIPT MODAL)        -->
+  <!-- ========================================================= -->
+  <div id="modal-receipt" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-velvet/45 backdrop-blur-sm p-4">
+    <div class="bg-white w-full max-w-sm rounded-3xl border border-linewarm shadow-float p-6 text-center space-y-4">
+      <div class="w-14 h-14 mx-auto rounded-full bg-mintsoft text-emerald-600 flex items-center justify-center">
+        <svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+        </svg>
+      </div>
+      <div>
+        <h3 class="font-heading font-semibold text-lg text-velvet">ส่งคำสั่งซื้อสำเร็จ (Demo)</h3>
+        <p class="text-xs text-plum/80 mt-1">ระบบบันทึกรายการจำลองของคุณเรียบร้อยแล้ว</p>
+      </div>
+      <div class="bg-pearl rounded-2xl p-3.5 border border-linewarm space-y-1">
+        <p class="text-[11px] text-plum/70">หมายเลขคำสั่งซื้อ</p>
+        <div class="flex items-center justify-center gap-2">
+          <span id="receipt-order-id" class="font-display font-bold text-base text-rosepop">#NC-0000</span>
+          <button
+            type="button"
+            onclick="copyReceiptOrderId()"
+            class="px-2 py-0.5 rounded-lg bg-white hover:bg-blush border border-linewarm text-[11px] font-heading text-velvet transition"
+          >
+            คัดลอก
+          </button>
+        </div>
+        <p id="receipt-summary" class="text-xs text-plum pt-1"></p>
+      </div>
+      <button
+        type="button"
+        onclick="closeReceiptAndGoHome()"
+        class="w-full py-3 rounded-2xl bg-gradient-to-r from-rosepop to-rosehover text-white font-heading font-semibold text-sm shadow-rose transition active:scale-95"
+      >
+        กลับหน้าแรกเพื่อดูรายการล่าสุด
+      </button>
+    </div>
+  </div>
+
+  <!-- ========================================================= -->
+  <!-- MODAL 6: ป๊อปอัพต้อนรับ (WELCOME POPUP - เลื่อนรูปซ้ายขวาได้) -->
+  <!-- ========================================================= -->
+  <div id="modal-welcome" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-velvet/45 backdrop-blur-sm p-4">
+    <div class="bg-white w-full max-w-sm sm:max-w-md rounded-3xl border-2 border-linewarm shadow-float overflow-hidden">
+      <!-- Top Cute Welcome Bar -->
+      <div class="px-4 py-3 bg-ivory border-b border-linewarm flex items-center justify-between gap-2">
+        <div class="flex items-center gap-2 min-w-0">
+          <span class="w-2.5 h-2.5 rounded-full bg-rosepop animate-pulse shrink-0"></span>
+          <h3 class="font-heading font-semibold text-sm sm:text-base text-velvet truncate">
+            ยินดีต้อนรับสู่ Nicha app ♥
+          </h3>
+        </div>
+        <button
+          type="button"
+          onclick="closeModal('modal-welcome')"
+          aria-label="ปิดป๊อปอัพต้อนรับ"
+          class="w-8 h-8 rounded-full bg-pearl hover:bg-blush text-velvet hover:text-rosepop flex items-center justify-center transition shrink-0"
+        >
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+      <!-- Swipeable Banner Carousel Area -->
+      <div class="relative bg-blush/35 select-none">
+        <div id="welcome-carousel-viewport" class="overflow-hidden w-full touch-pan-y">
+          <div id="welcome-carousel-track" class="flex transition-transform duration-300 ease-out">
+            <!-- Slides rendered by JavaScript -->
+          </div>
+        </div>
+
+        <!-- Slide Counter Pill -->
+        <span
+          id="welcome-slide-counter"
+          class="absolute top-2.5 right-2.5 px-2.5 py-0.5 rounded-full bg-velvet/60 backdrop-blur-sm text-white text-[11px] font-display font-semibold"
+        >
+          1 / 2
+        </span>
+
+        <!-- Prev / Next Arrow Buttons -->
+        <button
+          type="button"
+          onclick="moveWelcomeSlide(-1)"
+          aria-label="รูปก่อนหน้า"
+          class="absolute left-2.5 top-1/2 -translate-y-1/2 w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white/90 hover:bg-blush text-rosepop border border-pink-200/80 shadow-card flex items-center justify-center transition active:scale-90"
+        >
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+          </svg>
+        </button>
+        <button
+          type="button"
+          onclick="moveWelcomeSlide(1)"
+          aria-label="รูปถัดไป"
+          class="absolute right-2.5 top-1/2 -translate-y-1/2 w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white/90 hover:bg-blush text-rosepop border border-pink-200/80 shadow-card flex items-center justify-center transition active:scale-90"
+        >
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+          </svg>
+        </button>
+      </div>
+
+      <!-- Dots Indicator & Enter Store CTA -->
+      <div class="p-4 sm:p-5 space-y-3.5 text-center bg-white">
+        <div class="flex flex-col items-center gap-1.5">
+          <div id="welcome-carousel-dots" class="flex items-center justify-center gap-1.5">
+            <!-- Dots rendered by JavaScript -->
+          </div>
+          <p class="text-[11px] text-plum/65 font-heading">
+            เลื่อนซ้าย–ขวา หรือกดลูกศรเพื่อดูรูปเพิ่มเติม
+          </p>
+        </div>
+
+        <button
+          type="button"
+          onclick="closeModal('modal-welcome')"
+          class="w-full py-3 rounded-2xl bg-gradient-to-r from-rosepop to-rosehover text-white font-heading font-semibold text-xs sm:text-sm shadow-rose hover:opacity-95 transition active:scale-[0.98]"
+        >
+          เข้าสู่ร้านค้า ♥
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================= -->
+  <!-- TOAST NOTIFICATION (แทนการใช้ alert())                      -->
+  <!-- ========================================================= -->
+  <div
+    id="toast-box"
+    class="fixed bottom-20 sm:bottom-6 left-1/2 -translate-x-1/2 z-[60] pointer-events-none opacity-0 translate-y-3 transition-all duration-300"
+  >
+    <div class="px-4 py-2.5 rounded-full bg-velvet/95 text-white text-xs sm:text-sm font-heading shadow-float border border-white/15 whitespace-nowrap">
+      <span id="toast-message">แจ้งเตือน</span>
+    </div>
+  </div>
+
+  <!-- ========================================================= -->
+  <!-- APPLICATION SCRIPT (State, Vinyl Music Player, Cart, Admin) -->
+  <!-- ========================================================= -->
+  <script>
+    const STORAGE_KEY = 'nicha_app_demo_state_v2';
+
+    // Default Branding & Banner Data
+    const DEFAULT_STORE = {
+      name: 'Nicha app',
+      slogan: 'แอพพรีเมี่ยมแท้ คุ้มค่า ใช้งานไว ดูแลตลอดอายุการใช้งาน',
+      logoUrl: 'https://i.postimg.cc/Hx2KbjQ0/4.png',
+      homeBannerUrl: 'https://i.postimg.cc/pTZ2fZCy/IMG-9386.jpg',
+      homeBannerTitle: '',
+      homeBannerSubtitle: '',
+      catalogBannerUrl: 'https://i.postimg.cc/VsKf5K5b/IMG-9391.jpg',
+      catalogBannerTitle: '',
+      catalogBannerSubtitle: '',
+    };
+
+    // Default 9 Products พร้อมหลายแพ็กเกจราคาให้ลูกค้ากดเลือกได้ (ตรงกับ Grid 3x3 ในแบบร่างภาพที่ 2)
+    const DEFAULT_PRODUCTS = [
+      {
+        id: 'p1',
+        name: 'YouTube Premium',
+        category: 'ดูหนัง & ซีรีส์',
+        price: 19,
+        duration: '7 วัน / 1 เดือน / 3 เดือน / 1 ปี',
+        status: 'ขายดี',
+        image: 'https://placehold.co/400x400/FFE8F2/E64980?text=Demo%0AYouTube',
+        description: 'รับชม YouTube แบบไม่มีโฆษณา เล่นเบื้องหลังได้ พร้อมใช้งาน YouTube Music Premium ต่อเมลเดิมได้ รับประกันตลอดอายุแพ็กเกจ',
+        packages: [
+          { label: '7 วัน • ทดลองใช้', price: 19, tag: '' },
+          { label: '1 เดือน • เมลเดิม', price: 49, tag: 'ยอดฮิต' },
+          { label: '3 เดือน • สุดคุ้ม', price: 135, tag: 'ประหยัด' },
+          { label: '1 ปี • ใช้ยาวๆ', price: 490, tag: 'คุ้มสุด' },
+        ],
+      },
+      {
+        id: 'p2',
+        name: 'Netflix 4K UHD',
+        category: 'ดูหนัง & ซีรีส์',
+        price: 39,
+        duration: '7 วัน / 1 เดือน / 3 เดือน',
+        status: 'ขายดี',
+        image: 'https://placehold.co/400x400/FFE4E8/C92A2A?text=Demo%0ANetflix',
+        description: 'ความคมชัดสูงสุด 4K Ultra HD โปรไฟล์ส่วนตัวตั้ง PIN ได้ รองรับมือถือ แท็บเล็ต และคอมพิวเตอร์',
+        packages: [
+          { label: '7 วัน • จอส่วนตัว', price: 39, tag: '' },
+          { label: '1 เดือน • จอหาร', price: 99, tag: 'ยอดฮิต' },
+          { label: '1 เดือน • จอส่วนตัว', price: 129, tag: 'ตั้ง PIN' },
+          { label: '3 เดือน • จอส่วนตัว', price: 359, tag: 'คุ้มสุด' },
+        ],
+      },
+      {
+        id: 'p3',
+        name: 'Disney+ Hotstar',
+        category: 'ดูหนัง & ซีรีส์',
+        price: 29,
+        duration: '7 วัน / 1 เดือน / 3 เดือน',
+        status: 'พร้อมส่ง',
+        image: 'https://placehold.co/400x400/E9EFFF/364FC7?text=Demo%0ADisney%2B',
+        description: 'รวมหนัง Marvel, Pixar, Star Wars และซีรีส์เกาหลีสุดฮิต พากย์ไทย/ซับไทยครบ',
+        packages: [
+          { label: '7 วัน • มือถือ', price: 29, tag: '' },
+          { label: '1 เดือน • ครบทุกจอ', price: 69, tag: 'ยอดฮิต' },
+          { label: '3 เดือน • ครบทุกจอ', price: 189, tag: 'คุ้มสุด' },
+        ],
+      },
+      {
+        id: 'p4',
+        name: 'Spotify Premium',
+        category: 'ฟังเพลง',
+        price: 25,
+        duration: '14 วัน / 1 เดือน / 3 เดือน',
+        status: 'พร้อมส่ง',
+        image: 'https://placehold.co/400x400/E6F9EE/1B9E4B?text=Demo%0ASpotify',
+        description: 'ฟังเพลงคุณภาพสูงไร้โฆษณาคั่น โหลดเก็บไว้ฟังออฟไลน์ได้ ใช้แอคเคาท์เดิมของคุณเอง',
+        packages: [
+          { label: '14 วัน • เมลเดิม', price: 25, tag: '' },
+          { label: '1 เดือน • เมลเดิม', price: 55, tag: 'ยอดฮิต' },
+          { label: '3 เดือน • เมลเดิม', price: 149, tag: 'คุ้มสุด' },
+        ],
+      },
+      {
+        id: 'p5',
+        name: 'Apple Music',
+        category: 'ฟังเพลง',
+        price: 59,
+        duration: '1 เดือน / 3 เดือน / 6 เดือน',
+        status: 'พร้อมส่ง',
+        image: 'https://placehold.co/400x400/FFE8F2/F05D92?text=Demo%0AApple+Music',
+        description: 'ระบบเสียง Spatial Audio และ Lossless พร้อมเนื้อเพลงแบบเรียลไทม์ รองรับทั้ง iOS และ Android',
+        packages: [
+          { label: '1 เดือน • Lossless', price: 59, tag: 'ยอดฮิต' },
+          { label: '3 เดือน • Lossless', price: 159, tag: 'ประหยัด' },
+          { label: '6 เดือน • สุดคุ้ม', price: 299, tag: 'คุ้มสุด' },
+        ],
+      },
+      {
+        id: 'p6',
+        name: 'Canva Pro',
+        category: 'ตัดต่อ & ดีไซน์',
+        price: 15,
+        duration: '7 วัน / 1 เดือน / 1 ปี',
+        status: 'ขายดี',
+        image: 'https://placehold.co/400x400/E7F7FF/0284C7?text=Demo%0ACanva+Pro',
+        description: 'ปลดล็อกเทมเพลต ฟอนต์ และเครื่องมือ AI ลบพื้นหลังครบทุกฟังก์ชัน ใช้งานผ่านอีเมลส่วนตัว',
+        packages: [
+          { label: '7 วัน • ใช้เมลตัวเอง', price: 15, tag: '' },
+          { label: '1 เดือน • ใช้เมลตัวเอง', price: 39, tag: 'ยอดฮิต' },
+          { label: '6 เดือน • ใช้เมลตัวเอง', price: 169, tag: 'ประหยัด' },
+          { label: '1 ปี • ใช้เมลตัวเอง', price: 290, tag: 'คุ้มสุด' },
+        ],
+      },
+      {
+        id: 'p7',
+        name: 'CapCut Pro',
+        category: 'ตัดต่อ & ดีไซน์',
+        price: 29,
+        duration: '7 วัน / 1 เดือน / 3 เดือน',
+        status: 'พร้อมส่ง',
+        image: 'https://placehold.co/400x400/F3EEFF/5A4466?text=Demo%0ACapCut+Pro',
+        description: 'ตัดต่อวิดีโอระดับมืออาชีพ ใช้ฟิลเตอร์ ซับไตเติลอัตโนมัติ และเอฟเฟกต์ Pro ได้ไม่อั้น',
+        packages: [
+          { label: '7 วัน • ครบเอฟเฟกต์', price: 29, tag: '' },
+          { label: '1 เดือน • แอคเคาท์ร้าน', price: 79, tag: 'ยอดฮิต' },
+          { label: '3 เดือน • สุดคุ้ม', price: 219, tag: 'คุ้มสุด' },
+        ],
+      },
+      {
+        id: 'p8',
+        name: 'ChatGPT Plus',
+        category: 'ทำงาน & AI',
+        price: 69,
+        duration: '7 วัน / 1 เดือน / แอคส่วนตัว',
+        status: 'พร้อมส่ง',
+        image: 'https://placehold.co/400x400/E6F9F0/0F766E?text=Demo%0AChatGPT',
+        description: 'ผู้ช่วย AI อัจฉริยะ ตอบไว วิเคราะห์ไฟล์และสร้างภาพได้ เหมาะสำหรับนักเรียนและคนทำงาน',
+        packages: [
+          { label: '7 วัน • แพ็กเกจแชร์', price: 69, tag: '' },
+          { label: '1 เดือน • แพ็กเกจแชร์', price: 159, tag: 'ยอดฮิต' },
+          { label: '1 เดือน • บัญชีส่วนตัว', price: 690, tag: 'ส่วนตัว' },
+        ],
+      },
+      {
+        id: 'p9',
+        name: 'Notion Plus',
+        category: 'ทำงาน & AI',
+        price: 89,
+        duration: '1 เดือน / 3 เดือน / 1 ปี',
+        status: 'พร้อมส่ง',
+        image: 'https://placehold.co/400x400/FFF4E6/B45309?text=Demo%0ANotion',
+        description: 'จัดระเบียบงาน โน้ต และโปรเจกต์อย่างมืออาชีพ อัปโหลดไฟล์ไม่จำกัดขนาด',
+        packages: [
+          { label: '1 เดือน • พื้นที่ไม่อั้น', price: 89, tag: 'ยอดฮิต' },
+          { label: '3 เดือน • พื้นที่ไม่อั้น', price: 239, tag: 'ประหยัด' },
+          { label: '1 ปี • พื้นที่ไม่อั้น', price: 790, tag: 'คุ้มสุด' },
+        ],
+      },
+    ];
+
+    // Default Recent Orders (สำหรับกล่อง "รายการล่าสุด" ในแบบร่างภาพที่ 1)
+    const DEFAULT_ORDERS = [
+      {
+        id: 'NC-2611-1042',
+        customer: 'คุณ พ***',
+        contact: '@ploy_demo',
+        itemsSummary: 'YouTube Premium (x1)',
+        total: 49,
+        status: 'สำเร็จแล้ว',
+        time: '2 นาทีที่แล้ว',
+      },
+      {
+        id: 'NC-2611-1041',
+        customer: 'คุณ น***',
+        contact: '@nana_demo',
+        itemsSummary: 'Canva Pro (x1), Spotify Premium (x1)',
+        total: 94,
+        status: 'สำเร็จแล้ว',
+        time: '14 นาทีที่แล้ว',
+      },
+      {
+        id: 'NC-2611-1040',
+        customer: 'คุณ ม***',
+        contact: '@mint_demo',
+        itemsSummary: 'Netflix 4K UHD (x1)',
+        total: 99,
+        status: 'สำเร็จแล้ว',
+        time: '38 นาทีที่แล้ว',
+      },
+      {
+        id: 'NC-2611-1039',
+        customer: 'คุณ ก***',
+        contact: '@gun_demo',
+        itemsSummary: 'CapCut Pro (x1)',
+        total: 79,
+        status: 'สำเร็จแล้ว',
+        time: '1 ชั่วโมงที่แล้ว',
+      },
+    ];
+
+    // Categories List
+    const CATEGORIES = ['ทั้งหมด', 'ดูหนัง & ซีรีส์', 'ฟังเพลง', 'ตัดต่อ & ดีไซน์', 'ทำงาน & AI'];
+
+    // Application Runtime State
+    let state = {
+      store: { ...DEFAULT_STORE },
+      products: [...DEFAULT_PRODUCTS],
+      orders: [...DEFAULT_ORDERS],
+      reports: [],
+      cart: [],
+      activeView: 'home',
+      activeCategory: 'ทั้งหมด',
+      activeDetailProductId: null,
+      selectedPackageIndex: 0,
+      detailQty: 1,
+      pendingDeleteId: null,
+    };
+
+    // Toast Timer Reference
+    let toastTimer = null;
+
+    // =========================================================
+    // VINYL MUSIC PLAYER ENGINE (Web Audio API Music Box รองรับ iOS/iPadOS & มือถือเต็มรูปแบบ)
+    // =========================================================
+    const musicEngine = {
+      isPlaying: false,
+      userPaused: false,
+      ctx: null,
+      masterGain: null,
+      delayNode: null,
+      timerId: null,
+      step: 0,
+    };
+
+    // ความถี่โน้ตดนตรีเมโลดี้แนว Music Box หวานๆ น่ารัก (Hz)
+    const NOTE_FREQ = {
+      E3: 164.81, F3: 174.61, G3: 196.00, A3: 220.00, B3: 246.94,
+      C4: 261.63, D4: 293.66, E4: 329.63, F4: 349.23, G4: 392.00, A4: 440.00, B4: 493.88,
+      C5: 523.25, D5: 587.33, E5: 659.25, F5: 698.46, G5: 783.99, A5: 880.00, B5: 987.77,
+      C6: 1046.50, D6: 1174.66, E6: 1318.51,
+    };
+
+    const MELODY_SEQ = [
+      'E5', 'G5', 'C6', null,
+      'B5', 'G5', 'A5', null,
+      'F5', 'A5', 'C6', 'B5',
+      'G5', 'E5', 'D5', null,
+      'E5', 'G5', 'C6', 'D6',
+      'E6', 'D6', 'C6', null,
+      'A5', 'C6', 'B5', 'G5',
+      'C6', null, null, null,
+    ];
+
+    const CHORD_SEQ = {
+      0: ['C4', 'E4', 'G4'],
+      4: ['A3', 'C4', 'E4'],
+      8: ['F3', 'A3', 'C4'],
+      12: ['G3', 'B3', 'D4'],
+      16: ['C4', 'E4', 'G4'],
+      20: ['E3', 'G3', 'B3'],
+      24: ['F3', 'A3', 'C4'],
+      28: ['G3', 'C4', 'E4'],
+    };
+
+    /**
+     * สร้างและปลดล็อก AudioContext แบบ Synchronous ภายใน User Gesture (สำคัญมากสำหรับ iPhone/iPad Safari)
+     */
+    function unlockAudioContextSync() {
+      const AudioCtx = window.AudioContext || window.webkitAudioContext;
+      if (!AudioCtx) return null;
+
+      if (!musicEngine.ctx) {
+        const ctx = new AudioCtx();
+        const master = ctx.createGain();
+        master.gain.value = 0.28;
+
+        // Soft Delay Echo เพื่อให้เสียงกังวานเหมือนกล่องดนตรี
+        const delay = ctx.createDelay(0.5);
+        delay.delayTime.value = 0.26;
+        const delayFeedback = ctx.createGain();
+        delayFeedback.gain.value = 0.24;
+        const delayWet = ctx.createGain();
+        delayWet.gain.value = 0.22;
+
+        master.connect(ctx.destination);
+        master.connect(delay);
+        delay.connect(delayFeedback);
+        delayFeedback.connect(delay);
+        delay.connect(delayWet);
+        delayWet.connect(ctx.destination);
+
+        musicEngine.ctx = ctx;
+        musicEngine.masterGain = master;
+        musicEngine.delayNode = delay;
+      }
+
+      const ctx = musicEngine.ctx;
+      if (ctx.state === 'suspended') {
+        ctx.resume().catch(() => {});
+      }
+
+      // iOS Safari unlock trick: เล่น buffer เงียบ 1 sample ภายใน gesture
+      try {
+        const silentBuf = ctx.createBuffer(1, 1, 22050);
+        const src = ctx.createBufferSource();
+        src.buffer = silentBuf;
+        src.connect(ctx.destination);
+        src.start(0);
+      } catch (e) {}
+
+      return ctx;
+    }
+
+    /**
+     * เล่นโน้ต Music Box 1 เสียง (ใส นุ่ม ชัดเจนบนลำโพงมือถือ)
+     */
+    function playMusicBoxNote(freq, duration = 0.72, volume = 0.32, isChord = false) {
+      const ctx = musicEngine.ctx;
+      if (!ctx || !musicEngine.masterGain || ctx.state !== 'running') return;
+
+      const now = ctx.currentTime;
+      const osc = ctx.createOscillator();
+      const harmonic = ctx.createOscillator();
+      const gain = ctx.createGain();
+      const filter = ctx.createBiquadFilter();
+
+      osc.type = isChord ? 'sine' : 'triangle';
+      osc.frequency.setValueAtTime(freq, now);
+
+      harmonic.type = 'sine';
+      harmonic.frequency.setValueAtTime(freq * 2, now);
+
+      const harmonicGain = ctx.createGain();
+      harmonicGain.gain.setValueAtTime(isChord ? 0.05 : 0.14, now);
+
+      filter.type = 'lowpass';
+      filter.frequency.setValueAtTime(isChord ? 1500 : 3200, now);
+
+      gain.gain.setValueAtTime(0.0001, now);
+      gain.gain.linearRampToValueAtTime(volume, now + (isChord ? 0.04 : 0.015));
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + duration);
+
+      osc.connect(filter);
+      harmonic.connect(harmonicGain);
+      harmonicGain.connect(filter);
+      filter.connect(gain);
+      gain.connect(musicEngine.masterGain);
+
+      osc.start(now);
+      harmonic.start(now);
+      osc.stop(now + duration + 0.05);
+      harmonic.stop(now + duration + 0.05);
+    }
+
+    /**
+     * เล่น 1 จังหวะของเมโลดี้และคอร์ด
+     */
+    function triggerMusicStep() {
+      if (!musicEngine.isPlaying || !musicEngine.ctx || musicEngine.ctx.state !== 'running') return;
+
+      const idx = musicEngine.step % MELODY_SEQ.length;
+      const melodyName = MELODY_SEQ[idx];
+      if (melodyName && NOTE_FREQ[melodyName]) {
+        playMusicBoxNote(NOTE_FREQ[melodyName], 0.75, 0.34, false);
+      }
+
+      const chordNames = CHORD_SEQ[idx];
+      if (chordNames) {
+        chordNames.forEach((n) => {
+          if (NOTE_FREQ[n]) {
+            playMusicBoxNote(NOTE_FREQ[n], 1.35, 0.11, true);
+          }
+        });
+      }
+
+      musicEngine.step += 1;
+    }
+
+    /**
+     * เริ่มเล่นเพลงจากแผ่นเสียง
+     */
+    function startRealMusic() {
+      const ctx = unlockAudioContextSync();
+      musicEngine.userPaused = false;
+      musicEngine.isPlaying = true;
+      updateVinylVisuals(true);
+
+      const beginLoop = () => {
+        if (!musicEngine.isPlaying) return;
+        if (!musicEngine.timerId) {
+          triggerMusicStep();
+          musicEngine.timerId = setInterval(triggerMusicStep, 310);
+        }
+        detachAutoPlayListeners();
+      };
+
+      if (!ctx) return;
+      if (ctx.state === 'running') {
+        beginLoop();
+      } else {
+        ctx.resume()
+          .then(() => {
+            if (ctx.state === 'running') beginLoop();
+          })
+          .catch(() => {});
+      }
+    }
+
+    /**
+     * หยุดเล่นเพลงและหยุดหมุนแผ่นเสียง
+     */
+    function pauseRealMusic() {
+      musicEngine.isPlaying = false;
+      musicEngine.userPaused = true;
+      updateVinylVisuals(false);
+      if (musicEngine.timerId) {
+        clearInterval(musicEngine.timerId);
+        musicEngine.timerId = null;
+      }
+    }
+
+    /**
+     * อัปเดตแอนิเมชันแผ่นเสียงหมุน + โน๊ตดนตรีลอยฟุ้ง
+     */
+    function updateVinylVisuals(playing) {
+      const disc = document.getElementById('vinyl-disc');
+      const notesLayer = document.getElementById('music-notes-layer');
+      const dot = document.getElementById('vinyl-status-dot');
+      if (!disc || !notesLayer || !dot) return;
+
+      if (playing) {
+        disc.classList.add('vinyl-spinning');
+        notesLayer.classList.remove('hidden');
+        dot.classList.remove('bg-pearl', 'text-plum/60');
+        dot.classList.add('bg-blush', 'text-rosepop');
+        dot.innerHTML = `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 3v10.55A4 4 0 1 0 14 17V7h4V3h-6z" /></svg>`;
+      } else {
+        disc.classList.remove('vinyl-spinning');
+        notesLayer.classList.add('hidden');
+        dot.classList.remove('bg-blush', 'text-rosepop');
+        dot.classList.add('bg-pearl', 'text-plum/60');
+        dot.innerHTML = `<svg class="w-3 h-3" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 5h4v14H6zm8 0h4v14h-4z" /></svg>`;
+      }
+    }
+
+    /**
+     * แตะที่ปุ่มแผ่นเสียงเพื่อสลับ เล่น / หยุด
+     */
+    function toggleVinylMusic(event) {
+      if (event) event.stopPropagation();
+
+      if (musicEngine.isPlaying) {
+        pauseRealMusic();
+        showToast('หยุดเล่นเพลงชั่วคราว ❚❚');
+      } else {
+        startRealMusic();
+        showToast('กำลังเล่นเพลงจากแผ่นเสียง ♫');
+      }
+    }
+
+    /**
+     * แตะหน้าจอจุดใดก็ได้ครั้งแรก -> ปลดล็อกเสียงและเล่นแผ่นเสียงอัตโนมัติทันที
+     * (หาก iOS ยังไม่ปลดล็อกในอีเวนต์แรก จะรอปลดล็อกใน touchend/click ทันทีโดยไม่หลุด)
+     */
+    function handleFirstScreenTap(event) {
+      if (musicEngine.userPaused) return;
+      if (event && event.target && event.target.closest('#vinyl-player-btn')) return;
+
+      if (musicEngine.ctx && musicEngine.ctx.state === 'running' && musicEngine.isPlaying) {
+        detachAutoPlayListeners();
+        return;
+      }
+
+      startRealMusic();
+    }
+
+    function detachAutoPlayListeners() {
+      document.removeEventListener('touchstart', handleFirstScreenTap, true);
+      document.removeEventListener('touchend', handleFirstScreenTap, true);
+      document.removeEventListener('click', handleFirstScreenTap, true);
+    }
+
+    function attachAutoPlayListeners() {
+      document.addEventListener('touchstart', handleFirstScreenTap, true);
+      document.addEventListener('touchend', handleFirstScreenTap, true);
+      document.addEventListener('click', handleFirstScreenTap, true);
+    }
+
+    /**
+     * ช่วยดึงรายการแพ็กเกจของสินค้า (รองรับทั้งสินค้าที่มีหลายแพ็กเกจและสินค้าที่เพิ่มใหม่จากหลังบ้าน)
+     */
+    function getProductPackages(product) {
+      if (Array.isArray(product.packages) && product.packages.length > 0) {
+        return product.packages;
+      }
+      return [
+        {
+          label: product.duration || 'แพ็กเกจมาตรฐาน',
+          price: Number(product.price) || 0,
+          tag: '',
+        },
+      ];
+    }
+
+    /**
+     * Load state safely from localStorage (fallback to defaults if unavailable)
+     */
+    function loadState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return;
+        const parsed = JSON.parse(raw);
+
+        // Sanitize session-only blob: URLs so images don't break after reload
+        const sanitizeUrl = (url, fallback) =>
+          typeof url === 'string' && url.trim() && !url.startsWith('blob:') ? url : fallback;
+
+        if (parsed.store) {
+          state.store = {
+            ...DEFAULT_STORE,
+            ...parsed.store,
+            logoUrl: sanitizeUrl(parsed.store.logoUrl, DEFAULT_STORE.logoUrl),
+            homeBannerUrl: sanitizeUrl(parsed.store.homeBannerUrl, DEFAULT_STORE.homeBannerUrl),
+            catalogBannerUrl: sanitizeUrl(parsed.store.catalogBannerUrl, DEFAULT_STORE.catalogBannerUrl),
+          };
+        }
+        if (Array.isArray(parsed.products) && parsed.products.length > 0) {
+          state.products = parsed.products.map((p) => ({
+            ...p,
+            image: sanitizeUrl(
+              p.image,
+              `https://placehold.co/400x400/FCEAF1/E05583?text=Demo+${encodeURIComponent(p.name || 'App')}`
+            ),
+          }));
+        }
+        if (Array.isArray(parsed.orders)) state.orders = parsed.orders;
+        if (Array.isArray(parsed.reports)) state.reports = parsed.reports;
+        if (Array.isArray(parsed.cart)) state.cart = parsed.cart;
+      } catch (err) {
+        console.warn('Unable to read saved demo state:', err);
+      }
+    }
+
+    /**
+     * Save state safely to localStorage
+     */
+    function saveState() {
+      try {
+        const payload = {
+          store: state.store,
+          products: state.products,
+          orders: state.orders,
+          reports: state.reports,
+          cart: state.cart,
+        };
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+      } catch (err) {
+        console.warn('Unable to persist demo state:', err);
+      }
+    }
+
+    /**
+     * Escape HTML entities to prevent XSS when rendering user/demo strings
+     */
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text == null ? '' : String(text);
+      return div.innerHTML;
+    }
+
+    /**
+     * Show sleek toast notification instead of native alert()
+     */
+    function showToast(message) {
+      const box = document.getElementById('toast-box');
+      const msg = document.getElementById('toast-message');
+      msg.textContent = message;
+      box.classList.remove('opacity-0', 'translate-y-3');
+      box.classList.add('opacity-100', 'translate-y-0');
+
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => {
+        box.classList.add('opacity-0', 'translate-y-3');
+        box.classList.remove('opacity-100', 'translate-y-0');
+      }, 2800);
+    }
+
+    /**
+     * Switch between View 1 (Home) and View 2 (Catalog)
+     */
+    function switchView(viewName) {
+      state.activeView = viewName;
+      const homeEl = document.getElementById('view-home');
+      const catalogEl = document.getElementById('view-catalog');
+
+      if (viewName === 'catalog') {
+        homeEl.classList.add('hidden');
+        catalogEl.classList.remove('hidden');
+      } else {
+        catalogEl.classList.add('hidden');
+        homeEl.classList.remove('hidden');
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    /**
+     * Render Store Branding (Logo, Store Name, Slogan, Home & Catalog Banners)
+     */
+    function renderStoreBranding() {
+      const s = state.store;
+      document.title = `${s.name} — แอพพรีเมี่ยมแท้`;
+
+      const headerLogo = document.getElementById('header-logo');
+      if (headerLogo) headerLogo.src = s.logoUrl;
+      const vinylLogo = document.getElementById('vinyl-logo-img');
+      if (vinylLogo) vinylLogo.src = s.logoUrl;
+      const headerStoreName = document.getElementById('header-store-name');
+      if (headerStoreName) headerStoreName.textContent = s.name;
+      const headerStoreSlogan = document.getElementById('header-store-slogan');
+      if (headerStoreSlogan) headerStoreSlogan.textContent = s.slogan;
+      const footerStoreName = document.getElementById('footer-store-name');
+      if (footerStoreName) footerStoreName.textContent = s.name;
+
+      const homeBannerImg = document.getElementById('home-banner-img');
+      if (homeBannerImg) homeBannerImg.src = s.homeBannerUrl;
+      const catalogBannerImg = document.getElementById('catalog-banner-img');
+      if (catalogBannerImg) catalogBannerImg.src = s.catalogBannerUrl;
+
+      const loadingLogo = document.getElementById('loading-logo');
+      if (loadingLogo) loadingLogo.src = s.logoUrl;
+      const loadingStoreName = document.getElementById('loading-store-name');
+      if (loadingStoreName) loadingStoreName.textContent = s.name;
+    }
+
+    /**
+     * =========================================================
+     * LOADING SCREEN & WELCOME POPUP CAROUSEL
+     * =========================================================
+     */
+    const welcomeCarouselState = {
+      currentIndex: 0,
+      slides: [],
+      swipeBound: false,
+    };
+
+    /**
+     * แสดงหน้าดาวน์โหลด (0% -> 100%) แล้วค่อยเปิดป๊อปอัพต้อนรับอัตโนมัติ
+     */
+    function startLoadingScreen() {
+      const screen = document.getElementById('loading-screen');
+      const barFill = document.getElementById('loading-bar-fill');
+      const percentEl = document.getElementById('loading-percent');
+
+      if (!screen || !barFill || !percentEl) {
+        openWelcomeModal();
+        return;
+      }
+
+      document.body.classList.add('overflow-hidden');
+      let progress = 0;
+
+      const timer = setInterval(() => {
+        const step = progress < 65 ? 14 : progress < 90 ? 9 : 5;
+        progress = Math.min(100, progress + step);
+        barFill.style.width = `${progress}%`;
+        percentEl.textContent = `${progress}%`;
+
+        if (progress >= 100) {
+          clearInterval(timer);
+          setTimeout(() => {
+            screen.classList.add('opacity-0', 'pointer-events-none');
+            setTimeout(() => {
+              screen.classList.add('hidden');
+              openWelcomeModal();
+            }, 420);
+          }, 220);
+        }
+      }, 95);
+    }
+
+    /**
+     * เปิดป๊อปอัพต้อนรับพร้อมรูปแบนเนอร์ที่ผู้ใช้กำหนดไว้แบบสไลด์ได้หลายรูป
+     */
+    function openWelcomeModal() {
+      welcomeCarouselState.slides = [
+        {
+          url: state.store.homeBannerUrl || DEFAULT_STORE.homeBannerUrl,
+          alt: 'โปรโมชั่นต้อนรับ Nicha app 1',
+        },
+        {
+          url: state.store.catalogBannerUrl || DEFAULT_STORE.catalogBannerUrl,
+          alt: 'โปรโมชั่นต้อนรับ Nicha app 2',
+        },
+      ];
+      welcomeCarouselState.currentIndex = 0;
+
+      renderWelcomeCarousel();
+      setupWelcomeSwipe();
+      openModal('modal-welcome');
+    }
+
+    function renderWelcomeCarousel() {
+      const track = document.getElementById('welcome-carousel-track');
+      const dotsEl = document.getElementById('welcome-carousel-dots');
+      const counterEl = document.getElementById('welcome-slide-counter');
+      if (!track || !dotsEl || !counterEl) return;
+
+      const slides = welcomeCarouselState.slides;
+
+      track.innerHTML = slides
+        .map(
+          (slide) => `
+            <div class="w-full shrink-0 h-52 sm:h-64 bg-blush/35 overflow-hidden">
+              <img
+                src="${escapeHtml(slide.url)}"
+                alt="${escapeHtml(slide.alt)}"
+                onerror="this.onerror=null;this.src='https://placehold.co/900x540/FFE8F2/F05D92?text=Demo+Welcome';"
+                class="w-full h-full object-cover object-center pointer-events-none"
+              />
+            </div>
+          `
+        )
+        .join('');
+
+      dotsEl.innerHTML = slides
+        .map(
+          (_, idx) => `
+            <button
+              type="button"
+              onclick="goToWelcomeSlide(${idx})"
+              aria-label="ไปยังรูปที่ ${idx + 1}"
+              class="h-2 rounded-full transition-all duration-200 ${
+                idx === welcomeCarouselState.currentIndex
+                  ? 'w-6 bg-rosepop'
+                  : 'w-2 bg-pink-200 hover:bg-pink-300'
+              }"
+            ></button>
+          `
+        )
+        .join('');
+
+      updateWelcomeCarouselPosition();
+    }
+
+    function updateWelcomeCarouselPosition() {
+      const track = document.getElementById('welcome-carousel-track');
+      const counterEl = document.getElementById('welcome-slide-counter');
+      const dotsEl = document.getElementById('welcome-carousel-dots');
+      const total = welcomeCarouselState.slides.length;
+      if (!track || !total) return;
+
+      track.style.transform = `translateX(-${welcomeCarouselState.currentIndex * 100}%)`;
+
+      if (counterEl) {
+        counterEl.textContent = `${welcomeCarouselState.currentIndex + 1} / ${total}`;
+      }
+
+      if (dotsEl) {
+        Array.from(dotsEl.children).forEach((dot, idx) => {
+          dot.className = `h-2 rounded-full transition-all duration-200 ${
+            idx === welcomeCarouselState.currentIndex
+              ? 'w-6 bg-rosepop'
+              : 'w-2 bg-pink-200 hover:bg-pink-300'
+          }`;
+        });
+      }
+    }
+
+    function moveWelcomeSlide(step) {
+      const total = welcomeCarouselState.slides.length;
+      if (total <= 1) return;
+      welcomeCarouselState.currentIndex = (welcomeCarouselState.currentIndex + step + total) % total;
+      updateWelcomeCarouselPosition();
+    }
+
+    function goToWelcomeSlide(index) {
+      const total = welcomeCarouselState.slides.length;
+      if (index < 0 || index >= total) return;
+      welcomeCarouselState.currentIndex = index;
+      updateWelcomeCarouselPosition();
+    }
+
+    /**
+     * รองรับการปัดนิ้วซ้าย-ขวา (Touch Swipe) บนมือถือและแท็บเล็ต
+     */
+    function setupWelcomeSwipe() {
+      if (welcomeCarouselState.swipeBound) return;
+      const viewport = document.getElementById('welcome-carousel-viewport');
+      if (!viewport) return;
+
+      let startX = 0;
+      let deltaX = 0;
+      let isDragging = false;
+
+      viewport.addEventListener(
+        'touchstart',
+        (e) => {
+          if (!e.touches || !e.touches.length) return;
+          startX = e.touches[0].clientX;
+          deltaX = 0;
+          isDragging = true;
+        },
+        { passive: true }
+      );
+
+      viewport.addEventListener(
+        'touchmove',
+        (e) => {
+          if (!isDragging || !e.touches || !e.touches.length) return;
+          deltaX = e.touches[0].clientX - startX;
+        },
+        { passive: true }
+      );
+
+      viewport.addEventListener(
+        'touchend',
+        () => {
+          if (!isDragging) return;
+          isDragging = false;
+          if (Math.abs(deltaX) > 40) {
+            moveWelcomeSlide(deltaX < 0 ? 1 : -1);
+          }
+        },
+        { passive: true }
+      );
+
+      welcomeCarouselState.swipeBound = true;
+    }
+
+    /**
+     * Render Latest Orders Box on Home View (Sketch 1 - รายการล่าสุด)
+     */
+    function renderLatestOrders() {
+      const container = document.getElementById('latest-orders-list');
+      if (!state.orders.length) {
+        container.innerHTML = `
+          <div class="py-10 text-center text-xs text-plum/60">
+            ยังไม่มีรายการสั่งซื้อล่าสุด
+          </div>`;
+        return;
+      }
+
+      container.innerHTML = state.orders
+        .slice(0, 6)
+        .map((order) => {
+          const isSuccess = order.status === 'สำเร็จแล้ว';
+          const statusStyle = isSuccess
+            ? 'bg-mintsoft text-emerald-700 border-emerald-200/70'
+            : 'bg-amber-50 text-amber-700 border-amber-200/70';
+
+          return `
+            <div class="py-3.5 flex items-center justify-between gap-3">
+              <div class="flex items-center gap-3 min-w-0">
+                <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-blush to-lavender flex items-center justify-center shrink-0 text-rosepop font-display font-bold text-xs">
+                  ${escapeHtml(order.customer.slice(0, 5))}
+                </div>
+                <div class="min-w-0">
+                  <p class="text-xs sm:text-sm font-heading font-medium text-velvet truncate">
+                    ${escapeHtml(order.itemsSummary)}
+                  </p>
+                  <p class="text-[11px] text-plum/65 truncate mt-0.5">
+                    ${escapeHtml(order.customer)} • ${escapeHtml(order.time)} • #${escapeHtml(order.id)}
+                  </p>
+                </div>
+              </div>
+              <div class="text-right shrink-0 space-y-1">
+                <p class="font-display font-bold text-xs sm:text-sm text-velvet">฿${Number(order.total).toLocaleString()}</p>
+                <span class="inline-block px-2 py-0.5 rounded-full text-[10px] font-medium border ${statusStyle}">
+                  ${escapeHtml(order.status)}
+                </span>
+              </div>
+            </div>
+          `;
+        })
+        .join('');
+    }
+
+    /**
+     * Render Category Tabs on Catalog View (Sketch 2 - หมวดหมู่)
+     */
+    function renderCategoryTabs() {
+      const container = document.getElementById('category-tabs');
+      container.innerHTML = CATEGORIES.map((cat) => {
+        const isActive = state.activeCategory === cat;
+        const activeClasses = isActive
+          ? 'bg-gradient-to-r from-rosepop to-rosehover text-white shadow-sm'
+          : 'bg-pearl hover:bg-blush/80 text-plum hover:text-rosepop';
+
+        return `
+          <button
+            type="button"
+            onclick="selectCategory('${escapeHtml(cat)}')"
+            class="px-3.5 py-2 rounded-xl text-xs sm:text-sm font-heading font-medium whitespace-nowrap transition-all duration-200 ${activeClasses}"
+          >
+            ${escapeHtml(cat)}
+          </button>
+        `;
+      }).join('');
+    }
+
+    function selectCategory(category) {
+      state.activeCategory = category;
+      renderCategoryTabs();
+      renderProductGrid();
+    }
+
+    /**
+     * Render 3-Column Product Cards Grid on Catalog View (Sketch 2 - การ์ดสินค้า)
+     */
+    function renderProductGrid() {
+      const grid = document.getElementById('product-grid');
+      const emptyEl = document.getElementById('product-empty');
+
+      const filtered =
+        state.activeCategory === 'ทั้งหมด'
+          ? state.products
+          : state.products.filter((p) => p.category === state.activeCategory);
+
+      if (filtered.length === 0) {
+        grid.innerHTML = '';
+        emptyEl.classList.remove('hidden');
+        return;
+      }
+
+      emptyEl.classList.add('hidden');
+
+      grid.innerHTML = filtered
+        .map((product) => {
+          const isOut = product.status === 'หมดชั่วคราว';
+          const packages = getProductPackages(product);
+          const minPrice = Math.min(...packages.map((pkg) => Number(pkg.price) || 0));
+          const hasMultiPkg = packages.length > 1;
+          const badgeClass =
+            product.status === 'ขายดี'
+              ? 'bg-gradient-to-r from-rosepop to-pink-400 text-white'
+              : isOut
+              ? 'bg-velvet/75 text-white'
+              : 'bg-white/95 text-emerald-700';
+
+          return `
+            <article
+              onclick="openProductDetail('${escapeHtml(product.id)}')"
+              role="button"
+              tabindex="0"
+              onkeydown="if(event.key==='Enter'||event.key===' '){openProductDetail('${escapeHtml(product.id)}')}"
+              class="group cursor-pointer bg-white/95 hover:bg-white border-2 border-linewarm hover:border-rosepop/50 rounded-2xl sm:rounded-3xl overflow-hidden shadow-card hover:shadow-soft transition-all duration-200 active:scale-[0.97] flex flex-col ${isOut ? 'opacity-70' : ''}"
+            >
+              <!-- Square Thumbnail -->
+              <div class="relative aspect-square bg-pearl overflow-hidden">
+                <img
+                  src="${escapeHtml(product.image)}"
+                  alt="${escapeHtml(product.name)}"
+                  onerror="this.onerror=null;this.src='https://placehold.co/400x400/FFE8F2/F05D92?text=Demo';"
+                  class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                />
+                <span class="absolute top-1.5 left-1.5 sm:top-2 sm:left-2 px-2 py-0.5 rounded-full text-[9px] sm:text-[11px] font-heading font-semibold shadow-sm ${badgeClass}">
+                  ${escapeHtml(product.status)}
+                </span>
+              </div>
+
+              <!-- Card Info -->
+              <div class="p-2 sm:p-3.5 flex-1 flex flex-col justify-between gap-1.5">
+                <div>
+                  <h3 class="font-heading font-semibold text-[11px] sm:text-sm text-velvet leading-snug line-clamp-1 group-hover:text-rosepop transition-colors">
+                    ${escapeHtml(product.name)}
+                  </h3>
+                  <p class="text-[9px] sm:text-[11px] text-plum/75 line-clamp-1 mt-0.5">
+                    ${hasMultiPkg ? `${packages.length} แพ็กเกจให้เลือก` : escapeHtml(product.duration)}
+                  </p>
+                </div>
+
+                <div class="flex items-center justify-between pt-1 border-t border-linewarm/70">
+                  <div class="leading-tight">
+                    ${hasMultiPkg ? '<span class="block text-[9px] text-plum/65">เริ่มต้น</span>' : ''}
+                    <span class="font-display font-extrabold text-xs sm:text-base text-rosepop">
+                      ฿${Number(minPrice).toLocaleString()}
+                    </span>
+                  </div>
+                  <span class="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-blush group-hover:bg-rosepop text-rosepop group-hover:text-white flex items-center justify-center transition-colors shrink-0">
+                    <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.4">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                    </svg>
+                  </span>
+                </div>
+              </div>
+            </article>
+          `;
+        })
+        .join('');
+    }
+
+    /**
+     * Product Detail & Multi-Package Order Modal Logic
+     */
+    function openProductDetail(productId) {
+      const product = state.products.find((p) => p.id === productId);
+      if (!product) return;
+
+      const packages = getProductPackages(product);
+      // เลือกแพ็กเกจ "ยอดฮิต" เป็นค่าเริ่มต้นถ้ามี มิฉะนั้นเลือกอันแรก
+      const defaultIdx = packages.findIndex((pkg) => pkg.tag === 'ยอดฮิต');
+
+      state.activeDetailProductId = productId;
+      state.selectedPackageIndex = defaultIdx >= 0 ? defaultIdx : 0;
+      state.detailQty = 1;
+
+      document.getElementById('detail-img').src = product.image;
+      document.getElementById('detail-badge').textContent = product.status;
+      document.getElementById('detail-category').textContent = product.category;
+      document.getElementById('detail-name').textContent = product.name;
+      document.getElementById('detail-desc').textContent = product.description || 'แพ็กเกจแอพพรีเมี่ยมพร้อมดูแลตลอดอายุการใช้งาน';
+      document.getElementById('detail-qty').textContent = '1';
+
+      renderDetailPackages(product);
+
+      const isOut = product.status === 'หมดชั่วคราว';
+      const addBtn = document.getElementById('btn-add-cart');
+      const buyBtn = document.getElementById('btn-buy-now');
+      addBtn.disabled = isOut;
+      buyBtn.disabled = isOut;
+      addBtn.classList.toggle('opacity-40', isOut);
+      buyBtn.classList.toggle('opacity-40', isOut);
+      buyBtn.textContent = isOut ? 'สินค้าหมดชั่วคราว' : 'สั่งซื้อทันที';
+
+      openModal('modal-product');
+    }
+
+    /**
+     * แสดงตัวเลือกแพ็กเกจราคาหลายแบบใน Modal สินค้า (ขนาดเล็กน่ารัก ข้อความอยู่ซ้าย ราคาอยู่ขวา)
+     */
+    function renderDetailPackages(product) {
+      const packages = getProductPackages(product);
+      const activePkg = packages[state.selectedPackageIndex] || packages[0];
+
+      document.getElementById('detail-duration').textContent = activePkg.label;
+      document.getElementById('detail-price').textContent = `฿${Number(activePkg.price).toLocaleString()}`;
+
+      const container = document.getElementById('detail-packages');
+      container.innerHTML = packages
+        .map((pkg, idx) => {
+          const isSelected = idx === state.selectedPackageIndex;
+          const cardClasses = isSelected
+            ? 'border-rosepop bg-gradient-to-r from-blush/90 via-pink-50/70 to-white ring-2 ring-rosepop/20 shadow-sm'
+            : 'border-linewarm bg-pearl/70 hover:bg-blush/40 hover:border-pink-200';
+
+          return `
+            <button
+              type="button"
+              onclick="selectProductPackage(${idx})"
+              class="w-full rounded-2xl border-[1.5px] px-3 py-2 flex items-center justify-between gap-2 transition-all duration-150 active:scale-[0.98] ${cardClasses}"
+            >
+              <!-- ฝั่งซ้าย: จุดเลือก + ชื่อแพ็กเกจ + ป้ายแท็กเล็ก -->
+              <div class="flex items-center gap-2 min-w-0">
+                <span class="w-4 h-4 rounded-full shrink-0 flex items-center justify-center border ${
+                  isSelected
+                    ? 'bg-rosepop border-rosepop text-white'
+                    : 'bg-white border-pink-200 text-transparent'
+                }">
+                  <svg class="w-2.5 h-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                  </svg>
+                </span>
+                <span class="font-heading font-medium text-xs text-velvet truncate">
+                  ${escapeHtml(pkg.label)}
+                </span>
+                ${
+                  pkg.tag
+                    ? `<span class="shrink-0 px-1.5 py-0.5 rounded-full text-[9px] font-heading font-semibold ${
+                        isSelected ? 'bg-rosepop text-white' : 'bg-white text-rosepop border border-pink-200'
+                      }">${escapeHtml(pkg.tag)}</span>`
+                    : ''
+                }
+              </div>
+
+              <!-- ฝั่งขวา: ราคา -->
+              <span class="shrink-0 font-display font-bold text-sm ${
+                isSelected ? 'text-rosepop' : 'text-velvet'
+              }">
+                ฿${Number(pkg.price).toLocaleString()}
+              </span>
+            </button>
+          `;
+        })
+        .join('');
+    }
+
+    function selectProductPackage(index) {
+      const product = state.products.find((p) => p.id === state.activeDetailProductId);
+      if (!product) return;
+      state.selectedPackageIndex = index;
+      renderDetailPackages(product);
+    }
+
+    function adjustDetailQty(delta) {
+      state.detailQty = Math.max(1, Math.min(20, state.detailQty + delta));
+      document.getElementById('detail-qty').textContent = String(state.detailQty);
+    }
+
+    function addCurrentProductToCart(goToCheckoutImmediately) {
+      const product = state.products.find((p) => p.id === state.activeDetailProductId);
+      if (!product || product.status === 'หมดชั่วคราว') return;
+
+      const packages = getProductPackages(product);
+      const selectedPkg = packages[state.selectedPackageIndex] || packages[0];
+      const cartKey = `${product.id}__${selectedPkg.label}`;
+
+      const existing = state.cart.find((item) => (item.cartKey || item.productId) === cartKey);
+      if (existing) {
+        existing.qty += state.detailQty;
+      } else {
+        state.cart.push({
+          cartKey,
+          productId: product.id,
+          name: product.name,
+          packageLabel: selectedPkg.label,
+          price: Number(selectedPkg.price),
+          image: product.image,
+          duration: selectedPkg.label,
+          qty: state.detailQty,
+        });
+      }
+
+      saveState();
+      updateCartBadges();
+      closeModal('modal-product');
+
+      if (goToCheckoutImmediately) {
+        openCartModal();
+      } else {
+        showToast(`เพิ่ม "${product.name} (${selectedPkg.label})" ลงตะกร้าแล้ว`);
+      }
+    }
+
+    /**
+     * Update Cart Badges on Catalog view
+     */
+    function updateCartBadges() {
+      const totalItems = state.cart.reduce((sum, item) => sum + item.qty, 0);
+      ['catalog-cart-badge'].forEach((id) => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        if (totalItems > 0) {
+          el.textContent = String(totalItems);
+          el.classList.remove('hidden');
+        } else {
+          el.classList.add('hidden');
+        }
+      });
+    }
+
+    /**
+     * แยกหน้าต่างตะกร้าสินค้า และหน้าต่างระบบหลังบ้านออกจากกันโดยสิ้นเชิง
+     */
+    function openCartModal() {
+      renderCartPanel();
+      openModal('modal-cart');
+    }
+
+    function openAdminModal() {
+      populateAdminBrandingForm();
+      switchAdminSubTab('images');
+      openModal('modal-admin');
+    }
+
+    /**
+     * Render Shopping Cart Panel inside Cart Modal
+     */
+    function renderCartPanel() {
+      const container = document.getElementById('cart-items-container');
+      const form = document.getElementById('checkout-form');
+
+      if (state.cart.length === 0) {
+        form.classList.add('hidden');
+        container.innerHTML = `
+          <div class="py-10 text-center space-y-3">
+            <div class="w-14 h-14 mx-auto rounded-full bg-blush/70 border border-linewarm flex items-center justify-center text-rosepop">
+              <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M8.5 8.5V7a3.5 3.5 0 0 1 7 0v1.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                <path d="M5.6 9.6A2.2 2.2 0 0 1 7.78 7.75h8.44a2.2 2.2 0 0 1 2.18 1.85l.96 6.75A3.4 3.4 0 0 1 16 20.25H8a3.4 3.4 0 0 1-3.36-3.9l.96-6.75Z" fill="#FFE8F2" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" />
+                <path d="M12 16.35c-.22 0-.44-.08-.61-.24l-1.54-1.44a1.65 1.65 0 0 1 2.15-2.5c.72-.52 1.75-.46 2.34.18.56.62.53 1.61-.08 2.19l-1.65 1.57c-.17.16-.39.24-.61.24Z" fill="currentColor" />
+              </svg>
+            </div>
+            <p class="font-heading font-medium text-sm text-velvet">ตะกร้าสินค้าของคุณยังว่างอยู่</p>
+            <p class="text-xs text-plum/70">ไปเลือกแอพพรีเมี่ยมที่หน้ารายการสินค้าได้เลย</p>
+            <button type="button" onclick="closeModal('modal-cart');switchView('catalog')" class="px-5 py-2.5 rounded-full bg-blush hover:bg-rosepop text-rosepop hover:text-white text-xs font-heading font-medium transition">
+              ไปที่รายการสินค้า
+            </button>
+          </div>`;
+        return;
+      }
+
+      form.classList.remove('hidden');
+      let total = 0;
+
+      container.innerHTML = state.cart
+        .map((item, idx) => {
+          const subtotal = item.price * item.qty;
+          total += subtotal;
+          return `
+            <div class="flex items-center justify-between gap-3 p-3 rounded-2xl bg-pearl/70 border border-linewarm">
+              <div class="flex items-center gap-3 min-w-0">
+                <img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.name)}" class="w-12 h-12 rounded-xl object-cover bg-white border border-linewarm shrink-0" />
+                <div class="min-w-0">
+                  <p class="font-heading font-semibold text-xs sm:text-sm text-velvet truncate">${escapeHtml(item.name)}</p>
+                  <p class="text-[11px] text-rosepop font-medium truncate">${escapeHtml(item.packageLabel || item.duration || '')}</p>
+                  <p class="text-[11px] text-plum/70">฿${item.price.toLocaleString()} × ${item.qty}</p>
+                </div>
+              </div>
+              <div class="flex items-center gap-2 shrink-0">
+                <button type="button" onclick="updateCartItemQty(${idx}, -1)" class="w-7 h-7 rounded-full bg-white border border-linewarm text-velvet text-xs font-bold hover:bg-blush">−</button>
+                <span class="font-display font-bold text-xs w-5 text-center">${item.qty}</span>
+                <button type="button" onclick="updateCartItemQty(${idx}, 1)" class="w-7 h-7 rounded-full bg-white border border-linewarm text-velvet text-xs font-bold hover:bg-blush">+</button>
+                <button type="button" onclick="removeCartItem(${idx})" aria-label="ลบสินค้า" class="ml-1 text-plum/50 hover:text-rosepop text-xs px-1">✕</button>
+              </div>
+            </div>
+          `;
+        })
+        .join('');
+
+      document.getElementById('cart-total-price').textContent = `฿${total.toLocaleString()}`;
+    }
+
+    function updateCartItemQty(index, delta) {
+      if (!state.cart[index]) return;
+      state.cart[index].qty += delta;
+      if (state.cart[index].qty <= 0) {
+        state.cart.splice(index, 1);
+      }
+      saveState();
+      updateCartBadges();
+      renderCartPanel();
+    }
+
+    function removeCartItem(index) {
+      state.cart.splice(index, 1);
+      saveState();
+      updateCartBadges();
+      renderCartPanel();
+    }
+
+    /**
+     * Handle Demo Checkout Submission
+     */
+    function handleCheckout(event) {
+      event.preventDefault();
+      if (state.cart.length === 0) return;
+
+      const rawName = document.getElementById('checkout-name').value.trim();
+      const contact = document.getElementById('checkout-contact').value.trim();
+      const total = state.cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+      const summary = state.cart
+        .map((i) => `${i.name}${i.packageLabel ? ` [${i.packageLabel}]` : ''} (x${i.qty})`)
+        .join(', ');
+
+      // Mask customer display name slightly for privacy on public recent orders feed
+      const maskedName = rawName.length > 3 ? `${rawName.slice(0, 3)}***` : `${rawName}***`;
+      const orderId = `NC-${Math.floor(1000 + Math.random() * 9000)}`;
+
+      const newOrder = {
+        id: orderId,
+        customer: maskedName,
+        fullName: rawName,
+        contact,
+        itemsSummary: summary,
+        total,
+        status: 'รอตรวจสอบ (Demo)',
+        time: 'เมื่อสักครู่',
+      };
+
+      state.orders.unshift(newOrder);
+      state.cart = [];
+      saveState();
+
+      updateCartBadges();
+      renderLatestOrders();
+      document.getElementById('checkout-form').reset();
+      closeModal('modal-cart');
+
+      // Show Receipt Modal
+      document.getElementById('receipt-order-id').textContent = orderId;
+      document.getElementById('receipt-summary').textContent = `${summary} • ยอดรวม ฿${total.toLocaleString()}`;
+      openModal('modal-receipt');
+    }
+
+    function copyReceiptOrderId() {
+      const orderId = document.getElementById('receipt-order-id').textContent;
+      try {
+        const textarea = document.createElement('textarea');
+        textarea.value = orderId;
+        textarea.style.position = 'fixed';
+        textarea.style.opacity = '0';
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+        showToast(`คัดลอกเลขคำสั่งซื้อ ${orderId} แล้ว`);
+      } catch (err) {
+        showToast('ไม่สามารถคัดลอกอัตโนมัติได้');
+      }
+    }
+
+    function closeReceiptAndGoHome() {
+      closeModal('modal-receipt');
+      switchView('home');
+    }
+
+    /**
+     * =========================================================
+     * ADMIN BACK-OFFICE DEMO LOGIC (จัดการรูปภาพ, สินค้า, ออเดอร์)
+     * =========================================================
+     */
+    function switchAdminSubTab(subTab) {
+      const map = {
+        images: { btn: 'admin-sub-images', panel: 'admin-panel-images' },
+        products: { btn: 'admin-sub-products', panel: 'admin-panel-products' },
+        orders: { btn: 'admin-sub-orders', panel: 'admin-panel-orders' },
+      };
+
+      Object.keys(map).forEach((key) => {
+        const btn = document.getElementById(map[key].btn);
+        const panel = document.getElementById(map[key].panel);
+        if (key === subTab) {
+          btn.className = 'px-3.5 py-2 rounded-xl text-xs font-heading font-medium whitespace-nowrap bg-blush text-rosepop border border-rose-200 transition';
+          panel.classList.remove('hidden');
+        } else {
+          btn.className = 'px-3.5 py-2 rounded-xl text-xs font-heading font-medium whitespace-nowrap bg-pearl text-plum hover:text-velvet border border-linewarm transition';
+          panel.classList.add('hidden');
+        }
+      });
+
+      if (subTab === 'products') renderAdminProductsList();
+      if (subTab === 'orders') renderAdminOrdersAndReports();
+    }
+
+    function populateAdminBrandingForm() {
+      const s = state.store;
+      document.getElementById('admin-store-name').value = s.name;
+      document.getElementById('admin-store-slogan').value = s.slogan;
+      document.getElementById('admin-logo-url').value = s.logoUrl;
+      document.getElementById('admin-home-banner-url').value = s.homeBannerUrl;
+      document.getElementById('admin-home-banner-title').value = s.homeBannerTitle;
+      document.getElementById('admin-home-banner-sub').value = s.homeBannerSubtitle;
+      document.getElementById('admin-catalog-banner-url').value = s.catalogBannerUrl;
+      document.getElementById('admin-catalog-banner-title').value = s.catalogBannerTitle;
+      document.getElementById('admin-catalog-banner-sub').value = s.catalogBannerSubtitle;
+      document.getElementById('admin-product-count').textContent = String(state.products.length);
+    }
+
+    /**
+     * Local Image Preview via URL.createObjectURL (Session-only Demo, No Base64)
+     */
+    function handleLocalImageUpload(event, targetInputId) {
+      const file = event.target.files && event.target.files[0];
+      if (!file) return;
+      try {
+        const objectUrl = URL.createObjectURL(file);
+        document.getElementById(targetInputId).value = objectUrl;
+        showToast('เลือกรูปตัวอย่างแล้ว กดบันทึกเพื่อแสดงผล');
+      } catch (err) {
+        showToast('ไม่สามารถโหลดรูปภาพตัวอย่างได้');
+      }
+    }
+
+    function saveStoreBranding(event) {
+      event.preventDefault();
+      state.store = {
+        name: document.getElementById('admin-store-name').value.trim() || DEFAULT_STORE.name,
+        slogan: document.getElementById('admin-store-slogan').value.trim() || DEFAULT_STORE.slogan,
+        logoUrl: document.getElementById('admin-logo-url').value.trim() || DEFAULT_STORE.logoUrl,
+        homeBannerUrl: document.getElementById('admin-home-banner-url').value.trim() || DEFAULT_STORE.homeBannerUrl,
+        homeBannerTitle: document.getElementById('admin-home-banner-title').value.trim() || DEFAULT_STORE.homeBannerTitle,
+        homeBannerSubtitle: document.getElementById('admin-home-banner-sub').value.trim() || DEFAULT_STORE.homeBannerSubtitle,
+        catalogBannerUrl: document.getElementById('admin-catalog-banner-url').value.trim() || DEFAULT_STORE.catalogBannerUrl,
+        catalogBannerTitle: document.getElementById('admin-catalog-banner-title').value.trim() || DEFAULT_STORE.catalogBannerTitle,
+        catalogBannerSubtitle: document.getElementById('admin-catalog-banner-sub').value.trim() || DEFAULT_STORE.catalogBannerSubtitle,
+      };
+      saveState();
+      renderStoreBranding();
+      showToast('อัปเดตรูปภาพและข้อมูลร้านเรียบร้อยแล้ว');
+    }
+
+    /**
+     * Admin Product CRUD (Add / Edit / Inline-Confirmed Delete)
+     */
+    function renderAdminProductsList() {
+      document.getElementById('admin-product-count').textContent = String(state.products.length);
+      const container = document.getElementById('admin-products-list');
+
+      container.innerHTML = state.products
+        .map((p) => {
+          const confirming = state.pendingDeleteId === p.id;
+          return `
+            <div class="flex items-center justify-between gap-3 p-3 rounded-2xl bg-white border border-linewarm">
+              <div class="flex items-center gap-3 min-w-0">
+                <img src="${escapeHtml(p.image)}" alt="${escapeHtml(p.name)}" class="w-11 h-11 rounded-xl object-cover bg-pearl border border-linewarm shrink-0" />
+                <div class="min-w-0">
+                  <p class="font-heading font-semibold text-xs text-velvet truncate">${escapeHtml(p.name)}</p>
+                  <p class="text-[11px] text-plum/70 truncate">${escapeHtml(p.category)} • ฿${Number(p.price).toLocaleString()} • ${escapeHtml(p.status)}</p>
+                </div>
+              </div>
+              <div class="flex items-center gap-1.5 shrink-0">
+                ${
+                  confirming
+                    ? `
+                      <button type="button" onclick="confirmDeleteProduct('${escapeHtml(p.id)}')" class="px-2.5 py-1.5 rounded-lg bg-rosepop text-white text-[11px] font-heading font-medium">ยืนยันลบ</button>
+                      <button type="button" onclick="cancelDeleteProduct()" class="px-2 py-1.5 rounded-lg bg-pearl text-plum text-[11px]">ยกเลิก</button>
+                    `
+                    : `
+                      <button type="button" onclick="editProductInAdmin('${escapeHtml(p.id)}')" class="px-2.5 py-1.5 rounded-lg bg-pearl hover:bg-blush text-velvet hover:text-rosepop text-[11px] font-heading font-medium transition">แก้ไข</button>
+                      <button type="button" onclick="askDeleteProduct('${escapeHtml(p.id)}')" class="px-2.5 py-1.5 rounded-lg bg-pearl hover:bg-rose-50 text-plum hover:text-rosepop text-[11px] font-heading transition">ลบ</button>
+                    `
+                }
+              </div>
+            </div>
+          `;
+        })
+        .join('');
+    }
+
+    function saveProductFromAdmin(event) {
+      event.preventDefault();
+      const editId = document.getElementById('prod-edit-id').value;
+      const name = document.getElementById('prod-name').value.trim();
+      const category = document.getElementById('prod-category').value;
+      const price = Number(document.getElementById('prod-price').value) || 0;
+      const duration = document.getElementById('prod-duration').value.trim();
+      const status = document.getElementById('prod-status').value;
+      const imageInput = document.getElementById('prod-image').value.trim();
+      const description = document.getElementById('prod-desc').value.trim();
+
+      const finalImage =
+        imageInput ||
+        `https://placehold.co/400x400/FCEAF1/E05583?text=Demo+${encodeURIComponent(name.slice(0, 12))}`;
+
+      if (editId) {
+        const idx = state.products.findIndex((p) => p.id === editId);
+        if (idx !== -1) {
+          const existingPackages = state.products[idx].packages;
+          state.products[idx] = {
+            ...state.products[idx],
+            name,
+            category,
+            price,
+            duration,
+            status,
+            image: finalImage,
+            description,
+            packages:
+              Array.isArray(existingPackages) && existingPackages.length > 1
+                ? existingPackages
+                : [{ label: duration, price, tag: '' }],
+          };
+        }
+        showToast(`บันทึกการแก้ไข "${name}" แล้ว`);
+      } else {
+        state.products.unshift({
+          id: `p_${Date.now()}`,
+          name,
+          category,
+          price,
+          duration,
+          status,
+          image: finalImage,
+          description: description || 'แพ็กเกจแอพพรีเมี่ยมพร้อมใช้งาน (ข้อมูลสินค้า Demo)',
+          packages: [{ label: duration, price, tag: 'ใหม่' }],
+        });
+        showToast(`เพิ่มสินค้า "${name}" เรียบร้อยแล้ว`);
+      }
+
+      saveState();
+      resetProductForm();
+      renderProductGrid();
+      renderAdminProductsList();
+    }
+
+    function editProductInAdmin(productId) {
+      const p = state.products.find((item) => item.id === productId);
+      if (!p) return;
+
+      document.getElementById('prod-edit-id').value = p.id;
+      document.getElementById('prod-name').value = p.name;
+      document.getElementById('prod-category').value = p.category;
+      document.getElementById('prod-price').value = p.price;
+      document.getElementById('prod-duration').value = p.duration;
+      document.getElementById('prod-status').value = p.status;
+      document.getElementById('prod-image').value = p.image;
+      document.getElementById('prod-desc').value = p.description || '';
+
+      document.getElementById('admin-product-form-title').textContent = `กำลังแก้ไข: ${p.name}`;
+      document.getElementById('btn-save-product').textContent = 'บันทึกการแก้ไขสินค้า';
+      document.getElementById('btn-cancel-edit').classList.remove('hidden');
+      document.getElementById('admin-product-form').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    function resetProductForm() {
+      document.getElementById('admin-product-form').reset();
+      document.getElementById('prod-edit-id').value = '';
+      document.getElementById('admin-product-form-title').textContent = 'เพิ่มสินค้าใหม่';
+      document.getElementById('btn-save-product').textContent = '+ เพิ่มสินค้าลงหน้าร้าน';
+      document.getElementById('btn-cancel-edit').classList.add('hidden');
+    }
+
+    function askDeleteProduct(id) {
+      state.pendingDeleteId = id;
+      renderAdminProductsList();
+    }
+
+    function cancelDeleteProduct() {
+      state.pendingDeleteId = null;
+      renderAdminProductsList();
+    }
+
+    function confirmDeleteProduct(id) {
+      state.products = state.products.filter((p) => p.id !== id);
+      state.pendingDeleteId = null;
+      saveState();
+      renderProductGrid();
+      renderAdminProductsList();
+      showToast('ลบสินค้าออกจากรายการแล้ว');
+    }
+
+    /**
+     * Render Demo Orders & Support Reports inside Admin Panel
+     */
+    function renderAdminOrdersAndReports() {
+      const ordersEl = document.getElementById('admin-orders-list');
+      const reportsEl = document.getElementById('admin-reports-list');
+
+      ordersEl.innerHTML = state.orders
+        .map((o, idx) => {
+          const done = o.status === 'สำเร็จแล้ว';
+          return `
+            <div class="p-3 rounded-2xl bg-pearl/70 border border-linewarm flex items-center justify-between gap-3">
+              <div class="min-w-0">
+                <p class="text-xs font-heading font-semibold text-velvet truncate">#${escapeHtml(o.id)} • ${escapeHtml(o.itemsSummary)}</p>
+                <p class="text-[11px] text-plum/75 truncate">${escapeHtml(o.fullName || o.customer)} (${escapeHtml(o.contact || '-')}) • ฿${Number(o.total).toLocaleString()}</p>
+              </div>
+              <button
+                type="button"
+                onclick="toggleOrderStatus(${idx})"
+                class="shrink-0 px-2.5 py-1.5 rounded-lg text-[11px] font-heading font-medium border transition ${
+                  done
+                    ? 'bg-mintsoft text-emerald-700 border-emerald-200'
+                    : 'bg-amber-50 text-amber-700 border-amber-200 hover:bg-mintsoft'
+                }"
+              >
+                ${escapeHtml(o.status)}
+              </button>
+            </div>
+          `;
+        })
+        .join('');
+
+      if (state.reports.length === 0) {
+        reportsEl.innerHTML = `<p class="text-xs text-plum/60 py-3 text-center bg-pearl/50 rounded-2xl border border-linewarm">ยังไม่มีรายการแจ้งปัญหา</p>`;
+      } else {
+        reportsEl.innerHTML = state.reports
+          .map(
+            (r) => `
+            <div class="p-3 rounded-2xl bg-blush/40 border border-rose-200/70 space-y-1">
+              <div class="flex items-center justify-between gap-2">
+                <span class="text-xs font-heading font-semibold text-velvet">${escapeHtml(r.topic)}</span>
+                <span class="text-[10px] text-plum/70">${escapeHtml(r.time)}</span>
+              </div>
+              <p class="text-[11px] text-plum">อ้างอิง: ${escapeHtml(r.ref)}</p>
+              <p class="text-xs text-velvet/90">${escapeHtml(r.detail)}</p>
+            </div>
+          `
+          )
+          .join('');
+      }
+    }
+
+    function toggleOrderStatus(index) {
+      if (!state.orders[index]) return;
+      state.orders[index].status =
+        state.orders[index].status === 'สำเร็จแล้ว' ? 'รอตรวจสอบ (Demo)' : 'สำเร็จแล้ว';
+      saveState();
+      renderLatestOrders();
+      renderAdminOrdersAndReports();
+      showToast('อัปเดตสถานะคำสั่งซื้อแล้ว');
+    }
+
+    function resetDemoData() {
+      state.store = { ...DEFAULT_STORE };
+      state.products = [...DEFAULT_PRODUCTS];
+      state.orders = [...DEFAULT_ORDERS];
+      state.reports = [];
+      state.cart = [];
+      saveState();
+      renderStoreBranding();
+      renderLatestOrders();
+      renderCategoryTabs();
+      renderProductGrid();
+      updateCartBadges();
+      populateAdminBrandingForm();
+      showToast('คืนค่าข้อมูล Demo เริ่มต้นเรียบร้อยแล้ว');
+    }
+
+    /**
+     * Agent Group & Issue Report Handlers
+     */
+    function joinAgentDemo() {
+      closeModal('modal-agent');
+      showToast('โหมด Demo: พร้อมผูกกับลิงก์กลุ่ม LINE / Facebook จริงของคุณ');
+    }
+
+    function handleReportSubmit(event) {
+      event.preventDefault();
+      const ref = document.getElementById('report-ref').value.trim();
+      const topic = document.getElementById('report-topic').value;
+      const detail = document.getElementById('report-detail').value.trim();
+
+      state.reports.unshift({
+        id: `RP-${Date.now().toString().slice(-4)}`,
+        ref,
+        topic,
+        detail,
+        time: 'เมื่อสักครู่',
+      });
+      saveState();
+
+      document.getElementById('report-form').reset();
+      closeModal('modal-report');
+      showToast('ส่งเรื่องแจ้งปัญหา (Demo) เรียบร้อยแล้ว');
+    }
+
+    /**
+     * Modal Helpers
+     */
+    function openModal(id) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.classList.remove('hidden');
+      document.body.classList.add('overflow-hidden');
+    }
+
+    function closeModal(id) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.classList.add('hidden');
+      // Only unlock body scroll if no other modals are visible
+      const modalIds = ['modal-product', 'modal-cart', 'modal-admin', 'modal-agent', 'modal-report', 'modal-receipt', 'modal-welcome'];
+      const anyOpen = modalIds.some((mId) => {
+        const mEl = document.getElementById(mId);
+        return mEl && !mEl.classList.contains('hidden');
+      });
+      if (!anyOpen) {
+        document.body.classList.remove('overflow-hidden');
+      }
+    }
+
+    // Close modal when clicking backdrop
+    ['modal-product', 'modal-cart', 'modal-admin', 'modal-agent', 'modal-report', 'modal-receipt', 'modal-welcome'].forEach((modalId) => {
+      const el = document.getElementById(modalId);
+      if (!el) return;
+      el.addEventListener('click', (e) => {
+        if (e.target === el) closeModal(modalId);
+      });
+    });
+
+    /**
+     * Bootstrap Application on Load
+     */
+    window.addEventListener('DOMContentLoaded', () => {
+      loadState();
+      renderStoreBranding();
+      renderLatestOrders();
+      renderCategoryTabs();
+      renderProductGrid();
+      updateCartBadges();
+      attachAutoPlayListeners();
+      startLoadingScreen();
+    });
+  </script>
+</body>
+</html>
